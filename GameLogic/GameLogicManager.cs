@@ -8,8 +8,8 @@ namespace GameLogic
         public ChessPiece[,] Initialize()
         {
             throw new NotImplementedException();
-            //todo
-        }
+                //todo
+            }
 
         public bool Move(Coordinate from, Coordinate to)
         {

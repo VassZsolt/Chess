@@ -10,12 +10,17 @@ using System.Windows.Forms;
 
 namespace Chess
 {
-    public partial class Form1 : Form
+    public partial class Form_ChessBoard : Form
     {
-        public Form1()
+        public Form_ChessBoard()
         {
             InitializeComponent();
+            GameLogicManager.Initialize();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
