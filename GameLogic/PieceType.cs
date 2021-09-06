@@ -12,7 +12,7 @@ namespace GameLogic
         Knight,
         Rook,
         Bishop,
-        // todo
-
+        Queen,
+        King
     }
 }
