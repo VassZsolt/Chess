@@ -72,7 +72,38 @@ namespace Chess
                     button.BackgroundImageLayout = ImageLayout.Center;
                 }
                 #endregion
-
+                #region _Black_team
+                if (row == 1)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_pawn.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                if (row == 0 && column == 0 || row == 0 && column == 7)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_rook.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                if (row == 0 && column == 1 || row == 0 && column == 6)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_knight.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                if (row == 0 && column == 2 || row == 0 && column == 5)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_bishop.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                if (row == 0 && column == 3)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_king.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                if (row == 0 && column == 4)
+                {
+                    button.BackgroundImage = Image.FromFile(GetPath("w_queen.png"));
+                    button.BackgroundImageLayout = ImageLayout.Center;
+                }
+                #endregion
             }
 
         }
