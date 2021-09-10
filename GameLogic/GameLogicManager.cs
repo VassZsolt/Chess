@@ -4,7 +4,8 @@ namespace GameLogic
 {
     public class GameLogicManager
     {
-        static ChessPiece[,] board = new ChessPiece[8, 8];
+        static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0
+
         public ChessPiece[,] Initialize()
         {
             // Create black team
@@ -54,7 +55,7 @@ namespace GameLogic
             board[7, 6].Type = PieceType.Knight;
             board[7, 7].Type = PieceType.Rook;
 
-            throw new NotImplementedException();
+            return board;
         }
 
         public bool Move(Coordinate from, Coordinate to)

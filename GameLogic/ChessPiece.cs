@@ -10,5 +10,6 @@ namespace GameLogic
     {
         public PieceColor Color { get; internal set; }
         public PieceType Type { get; internal set; }
+       
     }
 }
