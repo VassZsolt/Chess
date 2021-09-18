@@ -22,58 +22,310 @@ namespace Chess
              Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Images", figureFileName);
         }
 
-        private GameLogicManager gameLogicManager;
+        public GameLogicManager gameLogicManager;
+
+        public int number_of_click = 0;
+
+        public int db = 0;
 
         public Form_ChessBoard()
         {
             InitializeComponent();
-
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public void Form1_Load(object sender, EventArgs e)
         {
             gameLogicManager = new GameLogicManager();
             ChessPiece[,] x = gameLogicManager.Initialize();
-            int piece_type, piece_color;
 
+            //while(true)
+            //{
             foreach (Button button in Panel_Board.Controls)
             {
+
                 int column = button.Name[0] - 65;
                 int row = (int)char.GetNumericValue(button.Name[1]) - 1;
-                #region _Black_team
-                if (row==6)
+
+                #region _Teams_show
+                if (x[row, column] != null)
                 {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
-                }
-                if(row==7 && column==0 || row == 7 && column == 7)
-                {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_rook.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
-                }
-                if (row == 7 && column == 1 || row == 7 && column == 6)
-                {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_knight.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
-                }
-                if (row == 7 && column == 2 || row == 7 && column == 5)
-                {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_bishop.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
-                }
-                if (row == 7 && column == 4)
-                {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_king.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
-                }
-                if (row == 7 && column == 3)
-                {
-                    button.BackgroundImage = Image.FromFile(GetPath("b_queen.png"));
-                    button.BackgroundImageLayout = ImageLayout.Center;
+                    switch ((int)x[row, column].Type)
+                    {
+                        case 0: //Pawn
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_pawn.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                        case 1: //Knight
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_knight.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_knight.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                        case 2: //Rook
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_rook.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_rook.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                        case 3: //Bishop
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_bishop.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_bishop.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                        case 4: //Queen
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_queen.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_queen.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                        case 5: //King
+                            {
+                                switch ((int)x[row, column].Color)
+                                {
+                                    case 0: //Black
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("b_king.png"));
+                                            break;
+                                        }
+                                    case 1: //White
+                                        {
+                                            button.BackgroundImage = Image.FromFile(GetPath("w_king.png"));
+                                            break;
+                                        }
+                                }
+                                button.BackgroundImageLayout = ImageLayout.Center;
+                                break;
+                            }
+                    }
                 }
                 #endregion
+                button.Click += ButtonClicked;
+
+
+                //}
+            }
+
+
+        }
+
+
+
+        public Coordinate from = new Coordinate();
+        public Coordinate to = new Coordinate();
+        private void ButtonClicked(object sender, EventArgs e)
+        {
+            Button buttonPressed = (Button)sender;
+            int column_c = buttonPressed.Name[0] - 65;
+            int row_c = (int)char.GetNumericValue(buttonPressed.Name[1]) - 1;
+
+            number_of_click++;
+            if (number_of_click == 1)
+            {
+                from.X = row_c;
+                from.Y = column_c;
+            }
+            if (number_of_click == 2)
+            {
+                to.X = row_c;
+                to.Y = column_c;
+                ChessPiece[,] x = gameLogicManager.Move(from, to);
+                number_of_click = 0;
+
+
+                foreach (Button button in Panel_Board.Controls)
+                {
+
+                    int column = button.Name[0] - 65;
+                    int row = (int)char.GetNumericValue(button.Name[1]) - 1;
+
+                    #region _Teams_show
+                    if (x[row, column] != null)
+                    {
+                        switch ((int)x[row, column].Type)
+                        {
+                            case 0: //Pawn
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_pawn.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                            case 1: //Knight
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_knight.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_knight.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                            case 2: //Rook
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_rook.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_rook.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                            case 3: //Bishop
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_bishop.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_bishop.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                            case 4: //Queen
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_queen.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_queen.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                            case 5: //King
+                                {
+                                    switch ((int)x[row, column].Color)
+                                    {
+                                        case 0: //Black
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("b_king.png"));
+                                                break;
+                                            }
+                                        case 1: //White
+                                            {
+                                                button.BackgroundImage = Image.FromFile(GetPath("w_king.png"));
+                                                break;
+                                            }
+                                    }
+                                    button.BackgroundImageLayout = ImageLayout.Center;
+                                    break;
+                                }
+                        }
+                    }
+                    else
+                    {
+                        button.BackgroundImage = null;
+                    }
+                    #endregion
+                }
+
 
             }
+
 
         }
     }
@@ -102,31 +354,4 @@ namespace Chess
 /*Button buttonPressed = (Button)sender;
 int column = buttonPressed.Name[0] - 65;
 int row = (int)char.GetNumericValue(buttonPressed.Name[1]) - 1;
-*/
-
-
-/*
-                for (int i = 0; i < 8; i++)
-                {
-                    for (int j = 0; j < 8; j++)
-                    {
-                        if (x[i, j] is not null)
-                        {
-                            piece_type = (int)x[i, j].Type;
-                            piece_color = (int)x[i, j].Color;
-                            if (piece_color == 0)
-                            {
-                                switch (piece_type)
-                                {
-                                    case 0:
-                                        {
-                                            button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
-                                            button.BackgroundImageLayout = ImageLayout.Center;
-                                            break;
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
 */

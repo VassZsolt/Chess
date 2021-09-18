@@ -4,7 +4,7 @@ namespace GameLogic
 {
     public class GameLogicManager
     {
-        static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0
+        public static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
 
         public ChessPiece[,] Initialize()
         {
@@ -58,9 +58,108 @@ namespace GameLogic
             return board;
         }
 
-        public bool Move(Coordinate from, Coordinate to)
+        public ChessPiece[,] Move(Coordinate from, Coordinate to)
         {
-            return false;
+            int f_row = from.X;
+            int f_column = from.Y;
+            int t_row = to.X;
+            int t_column = to.Y;
+        
+            if(board[f_row,f_column]!=null)
+            {
+
+                switch (board[f_row, f_column].Type)
+                {
+                    case 0:
+                        {
+                            if ((int)board[f_row, f_column].Color == 0) //Black
+                            {
+                                if (f_row == t_row - 1 && f_column == t_column && board[t_row, t_column] is null) //Black Pawn move 1 up
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Type = PieceType.Pawn;
+                                    board[t_row, t_column].Color = PieceColor.Black;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if (f_row == t_row - 2 && f_column == t_column && f_row==1 && board[t_row, t_column] is null) //Black Pawn move 2 up
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Type = PieceType.Pawn;
+                                    board[t_row, t_column].Color = PieceColor.Black;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if(f_row==t_row-1 && f_column == t_column + 1) //Black Pawn hit left
+                                {
+                                    if(board[t_row,t_column] is not null)
+                                    {
+                                        board[t_row, t_column].Type = PieceType.Pawn;
+                                        board[t_row, t_column].Color = PieceColor.Black;
+                                        board[f_row, f_column] = null;
+                                        return board;
+                                    }
+                                }
+                                if (f_row == t_row - 1 && f_column == t_column - 1) //Black Pawn hit right
+                                {
+                                    if (board[t_row, t_column] is not null)
+                                    {
+                                        board[t_row, t_column].Type = PieceType.Pawn;
+                                        board[t_row, t_column].Color = PieceColor.Black;
+                                        board[f_row, f_column] = null;
+                                        return board;
+                                    }
+                                }
+
+                            }
+                            if ((int)board[f_row, f_column].Color == 1) //White
+                            {
+                                if (f_row == t_row + 1 && f_column == t_column && board[t_row, t_column] is null) //White Pawn move 1 down
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Type = PieceType.Pawn;
+                                    board[t_row, t_column].Color = PieceColor.White;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if (f_row == t_row + 2 && f_column == t_column && f_row == 6 && board[t_row, t_column] is null) //White Pawn move 2 down
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Type = PieceType.Pawn;
+                                    board[t_row, t_column].Color = PieceColor.White;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if (f_row == t_row + 1 && f_column == t_column + 1) //White Pawn hit left
+                                {
+                                    if (board[t_row, t_column] is not null)
+                                    {
+                                        board[t_row, t_column].Type = PieceType.Pawn;
+                                        board[t_row, t_column].Color = PieceColor.White;
+                                        board[f_row, f_column] = null;
+                                        return board;
+                                    }
+                                }
+                                if (f_row == t_row + 1 && f_column == t_column - 1) //White Pawn hit right
+                                {
+                                    if (board[t_row, t_column] is not null)
+                                    {
+                                        board[t_row, t_column].Type = PieceType.Pawn;
+                                        board[t_row, t_column].Color = PieceColor.White;
+                                        board[f_row, f_column] = null;
+                                        return board;
+                                    }
+                                }
+
+                            }
+                            return board;
+
+                        }
+
+                }
+                
+            }
+            return board;
             //todo
         }
     }
