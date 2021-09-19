@@ -68,7 +68,7 @@ namespace GameLogic
             if(board[f_row,f_column]!=null)
             {
 
-                switch (board[f_row, f_column].Type)
+                switch ((int)board[f_row, f_column].Type)
                 {
                     case 0:
                         {
@@ -155,6 +155,95 @@ namespace GameLogic
                             return board;
 
                         }
+                    case 1:
+                        {
+                            if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row,t_column] is null)   // 2 Down 1 Left
+                            ||  (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Down 1 Right 
+                            ||  (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is null)  // 2 Up   1 Left 
+                            ||  (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Up   1 Right
+                            ||  (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Down 2 Left 
+                            ||  (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is null)  // 1 Down 2 Right 
+                            ||  (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Up   2 Left
+                            ||  (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is null)) // 1 Up   2 Right
+                            {
+                                
+                                if ((int)board[f_row, f_column].Color == 1 )       // White Knight simple move
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Color = PieceColor.White;
+                                    board[t_row, t_column].Type = PieceType.Knight;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if ((int)board[f_row, f_column].Color == 0 )      //Black Knight simple move
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Color = PieceColor.Black;
+                                    board[t_row, t_column].Type = PieceType.Knight;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+
+                                return board;
+
+                            }
+                           if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Down 1 Left
+                            || (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Down 1 Right 
+                            || (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Up   1 Left 
+                            || (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Up   1 Right
+                            || (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Down 2 Left 
+                            || (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is not null)   // 1 Down 2 Right 
+                            || (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Up   2 Left
+                            || (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is not null))  // 1 Up   2 Right
+                            {
+                                
+                                if ((int)board[f_row,f_column].Color==1 && (int)board[t_row,t_column].Color==0) //White Knight whith Black enemy
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Color = PieceColor.White;
+                                    board[t_row, t_column].Type = PieceType.Knight;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                                if ((int)board[f_row, f_column].Color == 0 && (int)board[t_row, t_column].Color == 1) //Black Knight whith White enemy
+                                {
+                                    board[t_row, t_column] = new ChessPiece();
+                                    board[t_row, t_column].Color = PieceColor.Black;
+                                    board[t_row, t_column].Type = PieceType.Knight;
+                                    board[f_row, f_column] = null;
+                                    return board;
+                                }
+                            }
+                            
+                                return board;
+                        }
+           
+                    /*case 2:
+                        {
+                            if ((f_row == t_row && f_column != t_column) || (f_row != t_row && f_column == t_column))
+                            {
+
+                                int diff_row = -1, diff_column = -1;
+                                diff_row = Math.Abs(f_row - t_row);
+                                diff_column = Math.Abs(f_column - t_column);
+                                
+
+
+                                //_-----------------------------------------------
+                                board[t_row, t_column] = new ChessPiece();
+                                if ((int)board[f_row,f_column].Color==1) //White
+                                {
+                                    board[t_row, t_column].Color = PieceColor.White;
+                                }
+                                else
+                                {
+                                    board[t_row, t_column].Color = PieceColor.Black;
+                                }
+                                board[t_row, t_column].Type = PieceType.Rook;
+                                board[f_row, f_column] = null;
+                            }
+                                return board;
+                        }*/
 
                 }
                 
