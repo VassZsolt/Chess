@@ -191,7 +191,7 @@ namespace Chess
             {
                 to.X = row_c;
                 to.Y = column_c;
-                ChessPiece[,] x = gameLogicManager.Move(from, to);
+                ChessPiece[,] x = gameLogicManager.Is_possible_move(from, to);
                 number_of_click = 0;
 
 
