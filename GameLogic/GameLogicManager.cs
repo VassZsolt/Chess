@@ -161,6 +161,12 @@ namespace GameLogic
                             possible = queen.is_possibe_move(from, to);
                             break;
                         }
+                    case PieceType.King:
+                        {
+                            GameLogic.King king = new GameLogic.King();
+                            possible = king.is_possibe_move(from, to);
+                            break;
+                        }
 
                 }
                 if (possible)
