@@ -58,14 +58,119 @@ namespace GameLogic
             return board;
         }
 
-        public ChessPiece[,] Move(Coordinate from, Coordinate to)
+        public ChessPiece[,] Move(int f_row, int f_column, int t_row, int t_column)
+        {
+            board[t_row, t_column] = new ChessPiece();
+            switch ((int)board[f_row, f_column].Type)
+            {
+                case 0:
+                    {
+                        board[t_row, t_column].Type = PieceType.Pawn;
+                        break;
+                    }
+                case 1:
+                    {
+                        board[t_row, t_column].Type = PieceType.Knight;
+                        break;
+                    }
+                case 2:
+                    {
+                        board[t_row, t_column].Type = PieceType.Rook;
+                        break;
+                    }
+                case 3:
+                    {
+                        board[t_row, t_column].Type = PieceType.Bishop;
+                        break;
+                    }
+                case 4:
+                    {
+                        board[t_row, t_column].Type = PieceType.Queen;
+                        break;
+                    }
+                case 5:
+                    {
+                        board[t_row, t_column].Type = PieceType.King;
+                        break;
+                    }
+            }
+            if ((int)board[f_row, f_column].Color == 0) //Black
+            {
+                board[t_row, t_column].Color = PieceColor.Black;
+            }
+            else
+            {
+                board[t_row, t_column].Color = PieceColor.White;
+            }
+            board[f_row, f_column] = null;
+            return board;
+        }
+
+        public ChessPiece[,] Hit(int f_row, int f_column, int t_row, int t_column)
+        {
+            bool Hit = false;
+
+            if ((int)board[f_row, f_column].Color == 0 && (int)board[t_row, t_column].Color == 1) //Black ChessPiece hit White one
+            {
+                board[t_row, t_column] = new ChessPiece();
+                board[t_row, t_column].Color = PieceColor.Black;
+                Hit = true;
+            }
+            if ((int)board[f_row, f_column].Color == 1 && (int)board[t_row, t_column].Color == 0) //White ChessPiece hit Black one
+            {
+                board[t_row, t_column] = new ChessPiece();
+                board[t_row, t_column].Color = PieceColor.White;
+                Hit = true;
+            }
+            if (Hit == true)
+            {
+
+                switch ((int)board[f_row, f_column].Type)
+                {
+                    case 0:
+                        {
+                            board[t_row, t_column].Type = PieceType.Pawn;
+                            break;
+                        }
+                    case 1:
+                        {
+                            board[t_row, t_column].Type = PieceType.Knight;
+                            break;
+                        }
+                    case 2:
+                        {
+                            board[t_row, t_column].Type = PieceType.Rook;
+                            break;
+                        }
+                    case 3:
+                        {
+                            board[t_row, t_column].Type = PieceType.Bishop;
+                            break;
+                        }
+                    case 4:
+                        {
+                            board[t_row, t_column].Type = PieceType.Queen;
+                            break;
+                        }
+                    case 5:
+                        {
+                            board[t_row, t_column].Type = PieceType.King;
+                            break;
+                        }
+                }
+                board[f_row, f_column] = null;
+            }
+            return board;
+        }
+
+        public ChessPiece[,] Is_possible_move(Coordinate from, Coordinate to)
         {
             int f_row = from.X;
             int f_column = from.Y;
             int t_row = to.X;
             int t_column = to.Y;
-        
-            if(board[f_row,f_column]!=null)
+
+            if (board[f_row, f_column] != null)
             {
 
                 switch ((int)board[f_row, f_column].Type)
@@ -76,182 +181,382 @@ namespace GameLogic
                             {
                                 if (f_row == t_row - 1 && f_column == t_column && board[t_row, t_column] is null) //Black Pawn move 1 up
                                 {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Type = PieceType.Pawn;
-                                    board[t_row, t_column].Color = PieceColor.Black;
-                                    board[f_row, f_column] = null;
-                                    return board;
+                                    Move(f_row, f_column, t_row, t_column);
                                 }
-                                if (f_row == t_row - 2 && f_column == t_column && f_row==1 && board[t_row, t_column] is null) //Black Pawn move 2 up
+                                if (f_row == t_row - 2 && f_column == t_column && f_row == 1 && board[t_row, t_column] is null) //Black Pawn move 2 up
                                 {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Type = PieceType.Pawn;
-                                    board[t_row, t_column].Color = PieceColor.Black;
-                                    board[f_row, f_column] = null;
-                                    return board;
+                                    Move(f_row, f_column, t_row, t_column);
                                 }
-                                if(f_row==t_row-1 && f_column == t_column + 1) //Black Pawn hit left
+                                if (f_row == t_row - 1 && f_column == t_column + 1 && board[t_row, t_column] is not null) //Black Pawn hit left
                                 {
-                                    if(board[t_row,t_column] is not null)
-                                    {
-                                        board[t_row, t_column].Type = PieceType.Pawn;
-                                        board[t_row, t_column].Color = PieceColor.Black;
-                                        board[f_row, f_column] = null;
-                                        return board;
-                                    }
+                                    Hit(f_row, f_column, t_row, t_column);
                                 }
-                                if (f_row == t_row - 1 && f_column == t_column - 1) //Black Pawn hit right
+                                if (f_row == t_row - 1 && f_column == t_column - 1 && board[t_row, t_column] is not null) //Black Pawn hit right
                                 {
-                                    if (board[t_row, t_column] is not null)
-                                    {
-                                        board[t_row, t_column].Type = PieceType.Pawn;
-                                        board[t_row, t_column].Color = PieceColor.Black;
-                                        board[f_row, f_column] = null;
-                                        return board;
-                                    }
+                                    Hit(f_row, f_column, t_row, t_column);
                                 }
-
+                                break;
                             }
                             if ((int)board[f_row, f_column].Color == 1) //White
                             {
                                 if (f_row == t_row + 1 && f_column == t_column && board[t_row, t_column] is null) //White Pawn move 1 down
                                 {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Type = PieceType.Pawn;
-                                    board[t_row, t_column].Color = PieceColor.White;
-                                    board[f_row, f_column] = null;
-                                    return board;
+                                    Move(f_row, f_column, t_row, t_column);
                                 }
                                 if (f_row == t_row + 2 && f_column == t_column && f_row == 6 && board[t_row, t_column] is null) //White Pawn move 2 down
                                 {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Type = PieceType.Pawn;
-                                    board[t_row, t_column].Color = PieceColor.White;
-                                    board[f_row, f_column] = null;
-                                    return board;
+                                    Move(f_row, f_column, t_row, t_column);
                                 }
-                                if (f_row == t_row + 1 && f_column == t_column + 1) //White Pawn hit left
+                                if (f_row == t_row + 1 && f_column == t_column + 1 && board[t_row, t_column] is not null) //White Pawn hit left
                                 {
-                                    if (board[t_row, t_column] is not null)
-                                    {
-                                        board[t_row, t_column].Type = PieceType.Pawn;
-                                        board[t_row, t_column].Color = PieceColor.White;
-                                        board[f_row, f_column] = null;
-                                        return board;
-                                    }
+                                    Hit(f_row, f_column, t_row, t_column);
                                 }
-                                if (f_row == t_row + 1 && f_column == t_column - 1) //White Pawn hit right
+                                if (f_row == t_row + 1 && f_column == t_column - 1 && board[t_row, t_column] is not null) //White Pawn hit right
                                 {
-                                    if (board[t_row, t_column] is not null)
-                                    {
-                                        board[t_row, t_column].Type = PieceType.Pawn;
-                                        board[t_row, t_column].Color = PieceColor.White;
-                                        board[f_row, f_column] = null;
-                                        return board;
-                                    }
+                                    Hit(f_row, f_column, t_row, t_column);
                                 }
-
+                                break;
                             }
-                            return board;
+                            break;
 
                         }
                     case 1:
                         {
-                            if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row,t_column] is null)   // 2 Down 1 Left
-                            ||  (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Down 1 Right 
-                            ||  (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is null)  // 2 Up   1 Left 
-                            ||  (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Up   1 Right
-                            ||  (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Down 2 Left 
-                            ||  (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is null)  // 1 Down 2 Right 
-                            ||  (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Up   2 Left
-                            ||  (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is null)) // 1 Up   2 Right
+                            if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row, t_column] is null)  // 2 Down 1 Left
+                             || (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Down 1 Right 
+                             || (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is null)  // 2 Up   1 Left 
+                             || (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is null)  // 2 Up   1 Right
+                             || (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Down 2 Left 
+                             || (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is null)  // 1 Down 2 Right 
+                             || (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is null)  // 1 Up   2 Left
+                             || (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is null)) // 1 Up   2 Right
                             {
-                                
-                                if ((int)board[f_row, f_column].Color == 1 )       // White Knight simple move
-                                {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Color = PieceColor.White;
-                                    board[t_row, t_column].Type = PieceType.Knight;
-                                    board[f_row, f_column] = null;
-                                    return board;
-                                }
-                                if ((int)board[f_row, f_column].Color == 0 )      //Black Knight simple move
-                                {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Color = PieceColor.Black;
-                                    board[t_row, t_column].Type = PieceType.Knight;
-                                    board[f_row, f_column] = null;
-                                    return board;
-                                }
-
-                                return board;
-
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
                             }
-                           if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Down 1 Left
-                            || (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Down 1 Right 
-                            || (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Up   1 Left 
-                            || (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Up   1 Right
-                            || (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Down 2 Left 
-                            || (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is not null)   // 1 Down 2 Right 
-                            || (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Up   2 Left
-                            || (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is not null))  // 1 Up   2 Right
+                            if ((f_row == t_row + 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Down 1 Left
+                             || (f_row == t_row + 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Down 1 Right 
+                             || (f_row == t_row - 2 && f_column == t_column + 1 && board[t_row, t_column] is not null)   // 2 Up   1 Left 
+                             || (f_row == t_row - 2 && f_column == t_column - 1 && board[t_row, t_column] is not null)   // 2 Up   1 Right
+                             || (f_row == t_row + 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Down 2 Left 
+                             || (f_row == t_row + 1 && f_column == t_column - 2 && board[t_row, t_column] is not null)   // 1 Down 2 Right 
+                             || (f_row == t_row - 1 && f_column == t_column + 2 && board[t_row, t_column] is not null)   // 1 Up   2 Left
+                             || (f_row == t_row - 1 && f_column == t_column - 2 && board[t_row, t_column] is not null))  // 1 Up   2 Right
                             {
-                                
-                                if ((int)board[f_row,f_column].Color==1 && (int)board[t_row,t_column].Color==0) //White Knight whith Black enemy
-                                {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Color = PieceColor.White;
-                                    board[t_row, t_column].Type = PieceType.Knight;
-                                    board[f_row, f_column] = null;
-                                    return board;
-                                }
-                                if ((int)board[f_row, f_column].Color == 0 && (int)board[t_row, t_column].Color == 1) //Black Knight whith White enemy
-                                {
-                                    board[t_row, t_column] = new ChessPiece();
-                                    board[t_row, t_column].Color = PieceColor.Black;
-                                    board[t_row, t_column].Type = PieceType.Knight;
-                                    board[f_row, f_column] = null;
-                                    return board;
-                                }
+
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
                             }
-                            
-                                return board;
+
+                            break;
                         }
-           
-                    /*case 2:
+
+                    case 2:
                         {
-                            if ((f_row == t_row && f_column != t_column) || (f_row != t_row && f_column == t_column))
+                            #region _Rook_basic_moves
+                            if ((f_row == t_row - 1 && f_column == t_column && board[t_row, t_column] is null)
+                             || (f_row == t_row + 1 && f_column == t_column && board[t_row, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 1 && board[t_row, t_column] is null)
+                             || (f_row == t_row && f_column == t_column + 1 && board[t_row, t_column] is null))
                             {
-
-                                int diff_row = -1, diff_column = -1;
-                                diff_row = Math.Abs(f_row - t_row);
-                                diff_column = Math.Abs(f_column - t_column);
-                                
-
-
-                                //_-----------------------------------------------
-                                board[t_row, t_column] = new ChessPiece();
-                                if ((int)board[f_row,f_column].Color==1) //White
-                                {
-                                    board[t_row, t_column].Color = PieceColor.White;
-                                }
-                                else
-                                {
-                                    board[t_row, t_column].Color = PieceColor.Black;
-                                }
-                                board[t_row, t_column].Type = PieceType.Rook;
-                                board[f_row, f_column] = null;
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
                             }
-                                return board;
-                        }*/
 
+                            if ((f_row == t_row - 2 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 2 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 2 && board[t_row, t_column] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 2 && board[t_row, t_column] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 3 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 3 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 3 && board[t_row, t_column] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 3 && board[t_row, t_column] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+                            if ((f_row == t_row - 4 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 4 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 4 && board[t_row, t_column] is null
+                                               && board[t_row, t_column - 3] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 4 && board[t_row, t_column] is null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 5 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 5 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 5 && board[t_row, t_column] is null
+                                               && board[t_row, t_column - 4] is null
+                                               && board[t_row, t_column - 3] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 5 && board[t_row, t_column] is null
+                                               && board[t_row, t_column + 4] is null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+
+
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 6 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 5, t_column] is null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 6 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 5, t_column] is null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                            || (f_row == t_row && f_column == t_column - 6 && board[t_row, t_column] is null
+                                              && board[t_row, t_column - 5] is null
+                                              && board[t_row, t_column - 4] is null
+                                              && board[t_row, t_column - 3] is null
+                                              && board[t_row, t_column - 2] is null
+                                              && board[t_row, t_column - 1] is null)
+                            || (f_row == t_row && f_column == t_column + 6 && board[t_row, t_column] is null
+                                              && board[t_row, t_column + 5] is null
+                                              && board[t_row, t_column + 4] is null
+                                              && board[t_row, t_column + 3] is null
+                                              && board[t_row, t_column + 2] is null
+                                              && board[t_row, t_column + 1] is null))
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 7 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row - 6, t_column] is null
+                                 && board[t_row - 5, t_column] is null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 7 && f_column == t_column && board[t_row, t_column] is null
+                                 && board[t_row + 6, t_column] is null
+                                 && board[t_row + 5, t_column] is null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 7 && board[t_row, t_column] is null
+                                               && board[t_row, t_column - 6] is null
+                                               && board[t_row, t_column - 5] is null
+                                               && board[t_row, t_column - 4] is null
+                                               && board[t_row, t_column - 3] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 7 && board[t_row, t_column] is null
+                                               && board[t_row, t_column + 6] is null
+                                               && board[t_row, t_column + 5] is null
+                                               && board[t_row, t_column + 4] is null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+                            #endregion
+                            #region _Rook_basic_hits
+                            if ((f_row == t_row - 1 && f_column == t_column && board[t_row, t_column] is not null)
+                             || (f_row == t_row + 1 && f_column == t_column && board[t_row, t_column] is not null)
+                             || (f_row == t_row && f_column == t_column - 1 && board[t_row, t_column] is not null)
+                             || (f_row == t_row && f_column == t_column + 1 && board[t_row, t_column] is not null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+                            if ((f_row == t_row - 2 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 2 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 2 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 2 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 3 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 3 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 3 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 3 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+                            if ((f_row == t_row - 4 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 4 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 4 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column - 3] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 4 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 5 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 5 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 5 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column - 4] is null
+                                               && board[t_row, t_column - 5] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 5 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column + 4] is null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 6 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 5, t_column] is null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 6 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 5, t_column] is null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                            || (f_row == t_row && f_column == t_column - 6 && board[t_row, t_column] is not null
+                                              && board[t_row, t_column - 5] is null
+                                              && board[t_row, t_column - 4] is null
+                                              && board[t_row, t_column - 3] is null
+                                              && board[t_row, t_column - 2] is null
+                                              && board[t_row, t_column - 1] is null)
+                            || (f_row == t_row && f_column == t_column + 6 && board[t_row, t_column] is not null
+                                              && board[t_row, t_column + 5] is null
+                                              && board[t_row, t_column + 4] is null
+                                              && board[t_row, t_column + 3] is null
+                                              && board[t_row, t_column + 2] is null
+                                              && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+
+                            if ((f_row == t_row - 7 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row - 6, t_column] is null
+                                 && board[t_row - 5, t_column] is null
+                                 && board[t_row - 4, t_column] is null
+                                 && board[t_row - 3, t_column] is null
+                                 && board[t_row - 2, t_column] is null
+                                 && board[t_row - 1, t_column] is null)
+                             || (f_row == t_row + 7 && f_column == t_column && board[t_row, t_column] is not null
+                                 && board[t_row + 6, t_column] is null
+                                 && board[t_row + 5, t_column] is null
+                                 && board[t_row + 4, t_column] is null
+                                 && board[t_row + 3, t_column] is null
+                                 && board[t_row + 2, t_column] is null
+                                 && board[t_row + 1, t_column] is null)
+                             || (f_row == t_row && f_column == t_column - 7 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column - 6] is null
+                                               && board[t_row, t_column - 5] is null
+                                               && board[t_row, t_column - 4] is null
+                                               && board[t_row, t_column - 3] is null
+                                               && board[t_row, t_column - 2] is null
+                                               && board[t_row, t_column - 1] is null)
+                             || (f_row == t_row && f_column == t_column + 7 && board[t_row, t_column] is not null
+                                               && board[t_row, t_column + 6] is null
+                                               && board[t_row, t_column + 5] is null
+                                               && board[t_row, t_column + 4] is null
+                                               && board[t_row, t_column + 3] is null
+                                               && board[t_row, t_column + 2] is null
+                                               && board[t_row, t_column + 1] is null))
+                            {
+                                Hit(f_row, f_column, t_row, t_column);
+                                break;
+                            }
+                            #endregion
+
+                            break;
+                        }
+                       
                 }
-                
+                return board;
             }
             return board;
             //todo
         }
     }
-
 }
-   
