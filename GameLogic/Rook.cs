@@ -15,7 +15,7 @@ namespace GameLogic
             int db = 0;
             ChessPiece[,] board = GameLogicManager.board;
 
-            if (f_row != t_row && f_column != t_column)
+            if (f_row != t_row && f_column != t_column) //Ignore transverse move
             {
                 possible = false;
             }
