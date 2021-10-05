@@ -36,142 +36,130 @@ namespace Chess
         public void Form1_Load(object sender, EventArgs e)
         {
             gameLogicManager = new GameLogicManager();
-            ChessPiece[,] x = gameLogicManager.Initialize();
+            ChessPiece[,] c_board = gameLogicManager.Initialize();
 
-            //while(true)
-            //{
             foreach (Button button in Panel_Board.Controls)
             {
-
-                int column = button.Name[0] - 65;
-                int row = (int)char.GetNumericValue(button.Name[1]) - 1;
+                Coordinate coordinate = new Coordinate();
+                coordinate.Column = button.Name[0] - 65;
+                coordinate.Row = (int)char.GetNumericValue(button.Name[1]) - 1;
 
                 #region _Teams_show
-                if (x[row, column] != null)
+                if (c_board[coordinate.Row, coordinate.Column] != null)
                 {
-                    switch ((int)x[row, column].Type)
+                    switch (c_board[coordinate.Row,coordinate.Column].Type)
                     {
-                        case 0: //Pawn
+                        case PieceType.Pawn:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_pawn.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
-                        case 1: //Knight
+                        case PieceType.Knight:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_knight.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_knight.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
-                        case 2: //Rook
+                        case PieceType.Rook:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_rook.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_rook.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
-                        case 3: //Bishop
+                        case PieceType.Bishop:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_bishop.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_bishop.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
-                        case 4: //Queen
+                        case PieceType.Queen:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_queen.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_queen.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
-                        case 5: //King
+                        case PieceType.King:
                             {
-                                switch ((int)x[row, column].Color)
+                                switch (c_board[coordinate.Row, coordinate.Column].Color)
                                 {
-                                    case 0: //Black
+                                    case PieceColor.Black:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("b_king.png"));
                                             break;
                                         }
-                                    case 1: //White
+                                    case PieceColor.White:
                                         {
                                             button.BackgroundImage = Image.FromFile(GetPath("w_king.png"));
                                             break;
                                         }
                                 }
-                                button.BackgroundImageLayout = ImageLayout.Center;
                                 break;
                             }
+
                     }
+                    button.BackgroundImageLayout = ImageLayout.Center;
                 }
                 #endregion
                 button.Click += ButtonClicked;
 
-
-                //}
             }
-
-
         }
-
-
 
         public Coordinate from = new Coordinate();
         public Coordinate to = new Coordinate();
@@ -184,137 +172,132 @@ namespace Chess
             number_of_click++;
             if (number_of_click == 1)
             {
-                from.X = row_c;
-                from.Y = column_c;
+                from.Row = row_c;
+                from.Column = column_c;
             }
             if (number_of_click == 2)
             {
-                to.X = row_c;
-                to.Y = column_c;
-                ChessPiece[,] x = gameLogicManager.Is_possible_move(from, to);
+                to.Row = row_c;
+                to.Column = column_c;
+                ChessPiece[,] c_board = gameLogicManager.Is_possible_move(from, to);
                 number_of_click = 0;
 
 
                 foreach (Button button in Panel_Board.Controls)
                 {
-
-                    int column = button.Name[0] - 65;
-                    int row = (int)char.GetNumericValue(button.Name[1]) - 1;
+                    Coordinate coordinate = new Coordinate();
+                    coordinate.Column = button.Name[0] - 65;
+                    coordinate.Row = (int)char.GetNumericValue(button.Name[1]) - 1;
 
                     #region _Teams_show
-                    if (x[row, column] != null)
+                    if (c_board[coordinate.Row, coordinate.Column] != null)
                     {
-                        switch ((int)x[row, column].Type)
+                        switch (c_board[coordinate.Row, coordinate.Column].Type)
                         {
-                            case 0: //Pawn
+                            case PieceType.Pawn:
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_pawn.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
-                            case 1: //Knight
+                            case PieceType.Knight: 
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_knight.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_knight.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
-                            case 2: //Rook
+                            case PieceType.Rook:
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_rook.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_rook.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
-                            case 3: //Bishop
+                            case PieceType.Bishop:
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_bishop.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_bishop.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
-                            case 4: //Queen
+                            case PieceType.Queen:
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_queen.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_queen.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
-                            case 5: //King
+                            case PieceType.King:
                                 {
-                                    switch ((int)x[row, column].Color)
+                                    switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
-                                        case 0: //Black
+                                        case PieceColor.Black:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("b_king.png"));
                                                 break;
                                             }
-                                        case 1: //White
+                                        case PieceColor.White:
                                             {
                                                 button.BackgroundImage = Image.FromFile(GetPath("w_king.png"));
                                                 break;
                                             }
                                     }
-                                    button.BackgroundImageLayout = ImageLayout.Center;
                                     break;
                                 }
                         }
+                        button.BackgroundImageLayout = ImageLayout.Center;
                     }
                     else
                     {
@@ -322,36 +305,7 @@ namespace Chess
                     }
                     #endregion
                 }
-
-
             }
-
-
         }
     }
 }
-
-
-
-
-
-/*
- foreach (Button button in Panel_Board.Controls)
-            {
-                int column = button.Name[0] - 65;
-                int row = (int)char.GetNumericValue(button.Name[1]) - 1;
-
-                //button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
-                //button.BackgroundImageLayout = ImageLayout.Center;
-
-                ChessPiece chessField = Field[row, column];
-                button.BackgroundImage = Image.FromFile(GetPath("b_pawn.png"));
-                button.BackgroundImageLayout = ImageLayout.Center;
-            }
- */
-
-
-/*Button buttonPressed = (Button)sender;
-int column = buttonPressed.Name[0] - 65;
-int row = (int)char.GetNumericValue(buttonPressed.Name[1]) - 1;
-*/

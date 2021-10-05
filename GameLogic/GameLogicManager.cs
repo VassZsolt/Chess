@@ -75,7 +75,7 @@ namespace GameLogic
             {
                 board[to.Row, to.Column] = new ChessPiece();
             }
-            switch (board[from.Row,from.Column].Type)
+            switch (board[from.Row, from.Column].Type)
             {
                 case PieceType.Pawn:
                     {
@@ -84,7 +84,7 @@ namespace GameLogic
                     }
                 case PieceType.Knight:
                     {
-                        board[to.Row,to.Column].Type = PieceType.Knight;
+                        board[to.Row, to.Column].Type = PieceType.Knight;
                         break;
                     }
                 case PieceType.Rook:
@@ -108,7 +108,7 @@ namespace GameLogic
                         break;
                     }
             }
-            if (board[from.Row,from.Column].Color == PieceColor.Black)
+            if (board[from.Row, from.Column].Color == PieceColor.Black)
             {
                 board[to.Row, to.Column].Color = PieceColor.Black;
             }
@@ -140,21 +140,27 @@ namespace GameLogic
                     case PieceType.Knight:
                         {
                             GameLogic.Knight knight = new GameLogic.Knight();
-                            possible = knight.is_possibe_move(from,to);
+                            possible = knight.is_possibe_move(from, to);
                             break;
                         }
                     case PieceType.Rook:
                         {
                             GameLogic.Rook rook = new GameLogic.Rook();
-                            possible = rook.is_possibe_move(from,to);
+                            possible = rook.is_possibe_move(from, to);
                             break;
                         }
-                        /*case PieceType.Bishop:
-                            {
-                                GameLogic.Bishop bishop = new GameLogic.Bishop();
-                                possible = bishop.is_possibe_move(f_row, f_column, t_row, t_column);
-                                break;
-                            }*/
+                    case PieceType.Bishop:
+                        {
+                            GameLogic.Bishop bishop = new GameLogic.Bishop();
+                            possible = bishop.is_possibe_move(from, to);
+                            break;
+                        }
+                    case PieceType.Queen:
+                        {
+                            GameLogic.Queen queen = new GameLogic.Queen();
+                            possible = queen.is_possibe_move(from, to);
+                            break;
+                        }
 
                 }
                 if (possible)
