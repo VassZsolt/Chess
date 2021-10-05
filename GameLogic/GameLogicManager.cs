@@ -57,107 +57,109 @@ namespace GameLogic
             return board;
         }
 
-        public ChessPiece[,] Move(int f_row, int f_column, int t_row, int t_column)
+        public ChessPiece[,] Move(Coordinate from, Coordinate to)
         {
-            if (board[t_row, t_column] is not null)
+            if (board[to.Row, to.Column] is not null)
             {
-                if (board[f_row, f_column].Color == PieceColor.Black && board[t_row, t_column].Color == PieceColor.White
-                 || board[f_row, f_column].Color == PieceColor.White && board[t_row, t_column].Color == PieceColor.Black)
+                if (board[from.Row, from.Column].Color == PieceColor.Black && board[to.Row, to.Column].Color == PieceColor.White
+                 || board[from.Row, from.Column].Color == PieceColor.White && board[to.Row, to.Column].Color == PieceColor.Black)
                 {
-                    board[t_row, t_column] = new ChessPiece();
+                    board[to.Row, to.Column] = new ChessPiece();
                 }
                 else
                 {
                     return board;
                 }
             }
-            if (board[t_row, t_column] is null)
+            if (board[to.Row, to.Column] is null)
             {
-                board[t_row, t_column] = new ChessPiece();
+                board[to.Row, to.Column] = new ChessPiece();
             }
-            switch (board[f_row, f_column].Type)
+            switch (board[from.Row,from.Column].Type)
             {
                 case PieceType.Pawn:
                     {
-                        board[t_row, t_column].Type = PieceType.Pawn;
+                        board[to.Row, to.Column].Type = PieceType.Pawn;
                         break;
                     }
                 case PieceType.Knight:
                     {
-                        board[t_row, t_column].Type = PieceType.Knight;
+                        board[to.Row,to.Column].Type = PieceType.Knight;
                         break;
                     }
                 case PieceType.Rook:
                     {
-                        board[t_row, t_column].Type = PieceType.Rook;
+                        board[to.Row, to.Column].Type = PieceType.Rook;
                         break;
                     }
                 case PieceType.Bishop:
                     {
-                        board[t_row, t_column].Type = PieceType.Bishop;
+                        board[to.Row, to.Column].Type = PieceType.Bishop;
                         break;
                     }
                 case PieceType.Queen:
                     {
-                        board[t_row, t_column].Type = PieceType.Queen;
+                        board[to.Row, to.Column].Type = PieceType.Queen;
                         break;
                     }
                 case PieceType.King:
                     {
-                        board[t_row, t_column].Type = PieceType.King;
+                        board[to.Row, to.Column].Type = PieceType.King;
                         break;
                     }
             }
-            if (board[f_row, f_column].Color == PieceColor.Black)
+            if (board[from.Row,from.Column].Color == PieceColor.Black)
             {
-                board[t_row, t_column].Color = PieceColor.Black;
+                board[to.Row, to.Column].Color = PieceColor.Black;
             }
             else
             {
-                board[t_row, t_column].Color = PieceColor.White;
+                board[to.Row, to.Column].Color = PieceColor.White;
             }
-            board[f_row, f_column] = null;
+            board[from.Row, from.Column] = null;
             return board;
         }
 
 
         public ChessPiece[,] Is_possible_move(Coordinate from, Coordinate to)
         {
-            int f_row = from.X;
-            int f_column = from.Y;
-            int t_row = to.X;
-            int t_column = to.Y;
             bool possible = false;
 
-            if (board[f_row, f_column] != null)
+            if (board[from.Row, from.Column] != null)
             {
-               
-                switch (board[f_row, f_column].Type)
+
+                switch (board[from.Row, from.Column].Type)
                 {
                     case PieceType.Pawn:
                         {
                             GameLogic.Pawn pawn = new GameLogic.Pawn();
-                            possible=pawn.is_possibe_move(f_row,f_column,t_row,t_column);                            
+                            possible = pawn.is_possibe_move(from, to);
                             break;
 
                         }
                     case PieceType.Knight:
                         {
                             GameLogic.Knight knight = new GameLogic.Knight();
-                            possible = knight.is_possibe_move(f_row, f_column, t_row, t_column);
+                            possible = knight.is_possibe_move(from,to);
                             break;
                         }
                     case PieceType.Rook:
                         {
                             GameLogic.Rook rook = new GameLogic.Rook();
-                            possible = rook.is_possibe_move(f_row, f_column, t_row, t_column);
+                            possible = rook.is_possibe_move(from,to);
                             break;
                         }
+                        /*case PieceType.Bishop:
+                            {
+                                GameLogic.Bishop bishop = new GameLogic.Bishop();
+                                possible = bishop.is_possibe_move(f_row, f_column, t_row, t_column);
+                                break;
+                            }*/
 
                 }
                 if (possible)
                 {
-                    Move(f_row, f_column, t_row, t_column);
+                    Move(from, to);
                 }
                 return board;
             }

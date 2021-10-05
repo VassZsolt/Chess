@@ -8,19 +8,19 @@ namespace GameLogic
 {
     public class Knight
     {
-        public bool is_possibe_move(int f_row, int f_column, int t_row, int t_column)
+        public bool is_possibe_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             ChessPiece[,] board = GameLogicManager.board;
 
-            if ((f_row == t_row + 2 && f_column == t_column + 1)  // 2 Down 1 Left
-             || (f_row == t_row + 2 && f_column == t_column - 1)  // 2 Down 1 Right 
-             || (f_row == t_row - 2 && f_column == t_column + 1)  // 2 Up   1 Left 
-             || (f_row == t_row - 2 && f_column == t_column - 1)  // 2 Up   1 Right
-             || (f_row == t_row + 1 && f_column == t_column + 2)  // 1 Down 2 Left 
-             || (f_row == t_row + 1 && f_column == t_column - 2)  // 1 Down 2 Right 
-             || (f_row == t_row - 1 && f_column == t_column + 2)  // 1 Up   2 Left
-             || (f_row == t_row - 1 && f_column == t_column - 2)) // 1 Up   2 Right
+            if ((from.Row == to.Row + 2 && from.Column == to.Column + 1)  // 2 Down 1 Left
+             || (from.Row == to.Row + 2 && from.Column == to.Column - 1)  // 2 Down 1 Right 
+             || (from.Row == to.Row - 2 && from.Column == to.Column + 1)  // 2 Up   1 Left 
+             || (from.Row == to.Row - 2 && from.Column == to.Column - 1)  // 2 Up   1 Right
+             || (from.Row == to.Row + 1 && from.Column == to.Column + 2)  // 1 Down 2 Left 
+             || (from.Row == to.Row + 1 && from.Column == to.Column - 2)  // 1 Down 2 Right 
+             || (from.Row == to.Row - 1 && from.Column == to.Column + 2)  // 1 Up   2 Left
+             || (from.Row == to.Row - 1 && from.Column == to.Column - 2)) // 1 Up   2 Right
             {
                 possible = true;
             }
