@@ -138,7 +138,7 @@ namespace GameLogic
                         {
                             if (board[t_row, t_column] is null)
                             {
-                                if(board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column                    //Black Pawn move 1 up
+                                if (board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column                    //Black Pawn move 1 up
                                 || board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 2 && f_column == t_column && f_row == 1      //Black Pawn move 2 up
                                 || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column                    //White Pawn move 1 down
                                 || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 2 && f_column == t_column && f_row == 6)     //White Pawn move 2 down
@@ -149,7 +149,7 @@ namespace GameLogic
                             else if (board[t_row, t_column] is not null)
                             {
 
-                                if(board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column + 1                //Black Pawn hit left         
+                                if (board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column + 1                //Black Pawn hit left         
                                 || board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column - 1                //Black Pawn hit right
                                 || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column + 1                //White Pawn hit left
                                 || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column - 1)                //White Pawn hit right
@@ -160,27 +160,132 @@ namespace GameLogic
                             break;
 
                         }
-                        case 1:
+                    case 1:
+                        {
+                            if ((f_row == t_row + 2 && f_column == t_column + 1)  // 2 Down 1 Left
+                             || (f_row == t_row + 2 && f_column == t_column - 1)  // 2 Down 1 Right 
+                             || (f_row == t_row - 2 && f_column == t_column + 1)  // 2 Up   1 Left 
+                             || (f_row == t_row - 2 && f_column == t_column - 1)  // 2 Up   1 Right
+                             || (f_row == t_row + 1 && f_column == t_column + 2)  // 1 Down 2 Left 
+                             || (f_row == t_row + 1 && f_column == t_column - 2)  // 1 Down 2 Right 
+                             || (f_row == t_row - 1 && f_column == t_column + 2)  // 1 Up   2 Left
+                             || (f_row == t_row - 1 && f_column == t_column - 2)) // 1 Up   2 Right
                             {
-                                if ((f_row == t_row + 2 && f_column == t_column + 1)  // 2 Down 1 Left
-                                 || (f_row == t_row + 2 && f_column == t_column - 1)  // 2 Down 1 Right 
-                                 || (f_row == t_row - 2 && f_column == t_column + 1)  // 2 Up   1 Left 
-                                 || (f_row == t_row - 2 && f_column == t_column - 1)  // 2 Up   1 Right
-                                 || (f_row == t_row + 1 && f_column == t_column + 2)  // 1 Down 2 Left 
-                                 || (f_row == t_row + 1 && f_column == t_column - 2)  // 1 Down 2 Right 
-                                 || (f_row == t_row - 1 && f_column == t_column + 2)  // 1 Up   2 Left
-                                 || (f_row == t_row - 1 && f_column == t_column - 2)) // 1 Up   2 Right
-                                {
-                                    Move(f_row, f_column, t_row, t_column);
-                                    break;
-                                }
+                                Move(f_row, f_column, t_row, t_column);
                                 break;
                             }
+                            break;
+                        }
+                    case 2:
+                        {
+                            int i = 0;
+                            int db = 0;
+                            bool possible = true;
 
-                        /*case 2:
+                            i = f_row;
+                            if (i < t_row && f_column == t_column) //Moving Up
                             {
-                                break;
-                            }*/
+                                do
+                                {
+                                    if (board[i + 1, t_column] is not null && possible)
+                                    {
+                                        if (board[f_row, t_column].Color == PieceColor.Black && board[i + 1, t_column].Color == PieceColor.White && i + 1 == t_row
+                                         || board[f_row, t_column].Color == PieceColor.White && board[i + 1, t_column].Color == PieceColor.Black && i + 1 == t_row)
+                                        {
+                                            possible = true;
+                                            db++;
+                                        }
+                                        else
+                                        {
+                                            possible = false;
+                                        }
+                                    }
+                                    if (board[i + 1, t_column] is null && possible)
+                                    {
+                                        possible = true;
+                                    }
+                                    i++;
+                                } while (i < t_row);
+                            }
+                             if (i > t_row && f_column == t_column) //Moving Down
+                            {
+                                do
+                                {
+                                    if (board[i - 1, t_column] is not null && possible)
+                                    {
+                                        if (board[f_row, t_column].Color == PieceColor.Black && board[i - 1, t_column].Color == PieceColor.White && i - 1 == t_row
+                                         || board[f_row, t_column].Color == PieceColor.White && board[i - 1, t_column].Color == PieceColor.Black && i - 1 == t_row)
+                                        {
+                                            possible = true;
+                                            db++;
+                                        }
+                                        else
+                                        {
+                                            possible = false;
+                                        }
+                                    }
+                                    if (board[i - 1, t_column] is null && possible)
+                                    {
+                                        possible = true;
+                                    }
+                                    i--;
+                                } while (i > t_row);
+                            }
+                            i = f_column;
+                            if (f_row == t_row && f_column < t_column) //Moving Right
+                            {
+                                do
+                                {
+                                    if (board[t_row, i + 1] is not null && possible)
+                                    {
+                                        if (board[t_row, f_column].Color == PieceColor.Black && board[t_row, i + 1].Color == PieceColor.White && i + 1 == t_column
+                                         || board[t_row, f_column].Color == PieceColor.White && board[t_row, i + 1].Color == PieceColor.Black && i + 1 == t_column)
+                                        {
+                                            possible = true;
+                                            db++;
+                                        }
+                                        else
+                                        {
+                                            possible = false;
+                                        }
+                                    }
+                                    if (board[t_row, i + 1] is null && possible)
+                                    {
+                                        possible = true;
+                                    }
+                                    i++;
+                                } while (i < t_row);
+                            }
+                            if (f_row == t_row && f_column > t_column) //Moving Right
+                            {
+                                do
+                                {
+                                    if (board[t_row, i - 1] is not null && possible)
+                                    {
+                                        if (board[t_row, f_column].Color == PieceColor.Black && board[t_row, i - 1].Color == PieceColor.White && i - 1 == t_column
+                                         || board[t_row, f_column].Color == PieceColor.White && board[t_row, i - 1].Color == PieceColor.Black && i - 1 == t_column)
+                                        {
+                                            possible = true;
+                                            db++;
+                                        }
+                                        else
+                                        {
+                                            possible = false;
+                                        }
+                                    }
+                                    if (board[t_row, i - 1] is null && possible)
+                                    {
+                                        possible = true;
+                                    }
+                                    i--;
+                                } while (i > t_row);
+                            }
+                            if (possible && db < 2)
+                            {
+                                Move(f_row, f_column, t_row, t_column);
+                            }
+                            break;
+                        }
 
                 }
                 return board;
