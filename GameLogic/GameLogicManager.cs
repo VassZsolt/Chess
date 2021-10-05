@@ -32,18 +32,10 @@ namespace GameLogic
             }
 
             // Create white team
-
             for (int i = 0; i < 8; i++)
             {
                 board[7, i] = new ChessPiece();
                 board[7, i].Color = PieceColor.White;
-            }
-
-            for (int i = 0; i < 8; i++)
-            {
-                board[6, i] = new ChessPiece();
-                board[6, i].Type = PieceType.Pawn;
-                board[6, i].Color = PieceColor.White;
             }
 
             board[7, 0].Type = PieceType.Rook;
@@ -54,6 +46,13 @@ namespace GameLogic
             board[7, 5].Type = PieceType.Bishop;
             board[7, 6].Type = PieceType.Knight;
             board[7, 7].Type = PieceType.Rook;
+
+            for (int i = 0; i < 8; i++)
+            {
+                board[6, i] = new ChessPiece();
+                board[6, i].Type = PieceType.Pawn;
+                board[6, i].Color = PieceColor.White;
+            }
 
             return board;
         }
@@ -76,40 +75,40 @@ namespace GameLogic
             {
                 board[t_row, t_column] = new ChessPiece();
             }
-            switch ((int)board[f_row, f_column].Type)
+            switch (board[f_row, f_column].Type)
             {
-                case 0:
+                case PieceType.Pawn:
                     {
                         board[t_row, t_column].Type = PieceType.Pawn;
                         break;
                     }
-                case 1:
+                case PieceType.Knight:
                     {
                         board[t_row, t_column].Type = PieceType.Knight;
                         break;
                     }
-                case 2:
+                case PieceType.Rook:
                     {
                         board[t_row, t_column].Type = PieceType.Rook;
                         break;
                     }
-                case 3:
+                case PieceType.Bishop:
                     {
                         board[t_row, t_column].Type = PieceType.Bishop;
                         break;
                     }
-                case 4:
+                case PieceType.Queen:
                     {
                         board[t_row, t_column].Type = PieceType.Queen;
                         break;
                     }
-                case 5:
+                case PieceType.King:
                     {
                         board[t_row, t_column].Type = PieceType.King;
                         break;
                     }
             }
-            if ((int)board[f_row, f_column].Color == 0) //Black
+            if (board[f_row, f_column].Color == PieceColor.Black)
             {
                 board[t_row, t_column].Color = PieceColor.Black;
             }
@@ -128,39 +127,21 @@ namespace GameLogic
             int f_column = from.Y;
             int t_row = to.X;
             int t_column = to.Y;
+            bool possible2 = false;
 
             if (board[f_row, f_column] != null)
             {
-
-                switch ((int)board[f_row, f_column].Type)
+               
+                switch (board[f_row, f_column].Type)
                 {
-                    case 0:
+                    case PieceType.Pawn:
                         {
-                            if (board[t_row, t_column] is null)
-                            {
-                                if (board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column                   //Black Pawn move 1 up
-                                || board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 2 && f_column == t_column && f_row == 1      //Black Pawn move 2 up
-                                || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column                    //White Pawn move 1 down
-                                || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 2 && f_column == t_column && f_row == 6)     //White Pawn move 2 down
-                                {
-                                    Move(f_row, f_column, t_row, t_column);
-                                }
-                            }
-                            else if (board[t_row, t_column] is not null)
-                            {
-
-                                if (board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column + 1                //Black Pawn hit left         
-                                || board[f_row, f_column].Color == PieceColor.Black && f_row == t_row - 1 && f_column == t_column - 1                 //Black Pawn hit right
-                                || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column + 1                 //White Pawn hit left
-                                || board[f_row, f_column].Color == PieceColor.White && f_row == t_row + 1 && f_column == t_column - 1)                //White Pawn hit right
-                                {
-                                    Move(f_row, f_column, t_row, t_column);
-                                }
-                            }
+                            GameLogic.Pawn pawn = new GameLogic.Pawn();
+                            possible2=pawn.is_possibe_move(f_row,f_column,t_row,t_column);                            
                             break;
 
                         }
-                    case 1:
+                    case PieceType.Knight:
                         {
                             if ((f_row == t_row + 2 && f_column == t_column + 1)  // 2 Down 1 Left
                              || (f_row == t_row + 2 && f_column == t_column - 1)  // 2 Down 1 Right 
@@ -176,7 +157,7 @@ namespace GameLogic
                             }
                             break;
                         }
-                    case 2:
+                    case PieceType.Rook:
                         {
                             int i = 0;
                             int db = 0;
@@ -207,7 +188,7 @@ namespace GameLogic
                                     i++;
                                 } while (i < t_row);
                             }
-                             if (i > t_row && f_column == t_column) //Moving Down
+                            if (i > t_row && f_column == t_column) //Moving Down
                             {
                                 do
                                 {
@@ -287,6 +268,10 @@ namespace GameLogic
                             break;
                         }
 
+                }
+                if (possible2)
+                {
+                    Move(f_row, f_column, t_row, t_column);
                 }
                 return board;
             }
