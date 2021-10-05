@@ -15,6 +15,10 @@ namespace GameLogic
             int db = 0;
             ChessPiece[,] board = GameLogicManager.board;
 
+            if (f_row != t_row && f_column != t_column)
+            {
+                possible = false;
+            }
             i = f_row;
             if (i < t_row && f_column == t_column) //Moving Up
             {
