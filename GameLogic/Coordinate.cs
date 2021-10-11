@@ -8,8 +8,8 @@ namespace GameLogic
 {
     public struct Coordinate
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; } //Numbers instead of A-H
 
     }
     
