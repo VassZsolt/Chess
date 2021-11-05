@@ -132,39 +132,46 @@ namespace GameLogic
                 {
                     case PieceType.Pawn:
                         {
+                            bool moveable = false;
+                            bool hitable = false;
                             GameLogic.Pawn pawn = new GameLogic.Pawn();
-                            possible = pawn.is_possibe_move(from, to);
+                            moveable = pawn.is_possible_move(from, to);
+                            hitable = pawn.is_possible_hit(from, to);
+                            if (moveable || hitable)
+                            {
+                                possible = true;
+                            }
                             break;
 
                         }
                     case PieceType.Knight:
                         {
                             GameLogic.Knight knight = new GameLogic.Knight();
-                            possible = knight.is_possibe_move(from, to);
+                            possible = knight.is_possible_move(from, to);
                             break;
                         }
                     case PieceType.Rook:
                         {
                             GameLogic.Rook rook = new GameLogic.Rook();
-                            possible = rook.is_possibe_move(from, to);
+                            possible = rook.is_possible_move(from, to);
                             break;
                         }
                     case PieceType.Bishop:
                         {
                             GameLogic.Bishop bishop = new GameLogic.Bishop();
-                            possible = bishop.is_possibe_move(from, to);
+                            possible = bishop.is_possible_move(from, to);
                             break;
                         }
                     case PieceType.Queen:
                         {
                             GameLogic.Queen queen = new GameLogic.Queen();
-                            possible = queen.is_possibe_move(from, to);
+                            possible = queen.is_possible_move(from, to);
                             break;
                         }
                     case PieceType.King:
                         {
                             GameLogic.King king = new GameLogic.King();
-                            possible = king.is_possibe_move(from, to);
+                            possible = king.is_possible_move(from, to);
                             break;
                         }
 

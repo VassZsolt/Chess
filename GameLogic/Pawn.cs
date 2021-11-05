@@ -8,11 +8,10 @@ namespace GameLogic
 {
     public class Pawn
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        bool possible = true;
+        ChessPiece[,] board = GameLogicManager.board;
+        public bool is_possible_move(Coordinate from, Coordinate to)
         {
-            bool possible = true;
-            ChessPiece[,] board = GameLogicManager.board;
-
             if (board[to.Row, to.Column] is null)
             {
                 if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column                       //Black Pawn move 1 up
@@ -28,9 +27,17 @@ namespace GameLogic
                     return possible;
                 }
             }
-            else if (board[to.Row, to.Column] is not null)
+            else
             {
-
+                possible=false;
+            }
+            
+            return possible;
+        }
+        public bool is_possible_hit(Coordinate from, Coordinate to)
+        {
+            if (board[to.Row, to.Column] is not null)
+            {
                 if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
                  || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column - 1                   //Black Pawn hit right
                  || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //White Pawn hit left
@@ -43,6 +50,11 @@ namespace GameLogic
                     possible = false;
                 }
             }
+            else
+            {
+                possible = false;
+            }
+
             return possible;
         }
     }

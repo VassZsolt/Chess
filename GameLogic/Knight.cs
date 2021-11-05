@@ -8,7 +8,7 @@ namespace GameLogic
 {
     public class Knight
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        public bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             ChessPiece[,] board = GameLogicManager.board;

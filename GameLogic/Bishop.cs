@@ -8,11 +8,11 @@ namespace GameLogic
 {
     public class Bishop
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        public bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             int i = 0; //used as row in loops
-            int j = 0; //used as row in loops
+            int j = 0; //used as column in loops
             int count_of_hit = 0;
             ChessPiece[,] board = GameLogicManager.board;
 
@@ -24,7 +24,7 @@ namespace GameLogic
             }
             i = from.Row;
             j = from.Column;
-            if (to.Row - i == to.Column - j)
+            if (Math.Abs(to.Row - i) == Math.Abs(to.Column - j))
             {
                 if (i < to.Row && j < to.Column) //Moving Up-Right
                 {
@@ -133,6 +133,11 @@ namespace GameLogic
                         j--;
                     } while (i > to.Row && j > to.Column);
                 }
+            }
+            else
+            {
+                possible = false;
+                return possible;
             }
             if (possible && count_of_hit < 2)
             {

@@ -8,7 +8,7 @@ namespace GameLogic
 {
     public class Queen
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        public bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             int i = 0;    //used as row in loops
@@ -131,7 +131,7 @@ namespace GameLogic
             else
             {
                 #region like_a_bishop
-                if (to.Row - i == to.Column - j) //is a transverse moving?
+                if (Math.Abs(to.Row - i) == Math.Abs(to.Column - j)) //is a transverse moving?
                 {
                     if (i < to.Row && j < to.Column) //Moving Up-Right
                     {
