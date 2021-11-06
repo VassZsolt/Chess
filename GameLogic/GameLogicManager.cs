@@ -12,7 +12,7 @@ namespace GameLogic
             for (int i = 0; i < 8; i++)
             {
                 board[0, i] = new ChessPiece();
-                board[0, i].Color = PieceColor.Black;
+                board[0, i].Color = PieceColor.White;
             }
 
             board[0, 0].Type = PieceType.Rook;
@@ -28,14 +28,14 @@ namespace GameLogic
             {
                 board[1, i] = new ChessPiece();
                 board[1, i].Type = PieceType.Pawn;
-                board[1, i].Color = PieceColor.Black;
+                board[1, i].Color = PieceColor.White;
             }
 
             // Create white team
             for (int i = 0; i < 8; i++)
             {
                 board[7, i] = new ChessPiece();
-                board[7, i].Color = PieceColor.White;
+                board[7, i].Color = PieceColor.Black;
             }
 
             board[7, 0].Type = PieceType.Rook;
@@ -51,7 +51,7 @@ namespace GameLogic
             {
                 board[6, i] = new ChessPiece();
                 board[6, i].Type = PieceType.Pawn;
-                board[6, i].Color = PieceColor.White;
+                board[6, i].Color = PieceColor.Black;
             }
 
             return board;
@@ -171,7 +171,7 @@ namespace GameLogic
                     case PieceType.King:
                         {
                             GameLogic.King king = new GameLogic.King();
-                            possible = king.is_possible_move(from, to);
+                            possible = king.entering_into_chess(from, to);
                             break;
                         }
 
