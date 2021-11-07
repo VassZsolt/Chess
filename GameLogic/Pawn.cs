@@ -59,7 +59,6 @@ namespace GameLogic
         }
         public bool can_give_chess(Coordinate from, Coordinate to)
         {
-
             if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
              || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column - 1                   //Black Pawn hit right
              || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column + 1                   //White Pawn hit left

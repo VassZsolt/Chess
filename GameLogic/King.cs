@@ -38,7 +38,7 @@ namespace GameLogic
             }
             return possible;
         }
-        public bool entering_into_chess(Coordinate from, Coordinate to)
+        public bool entering_into_check(Coordinate from, Coordinate to)
         {
             possible = is_possible_move(from, to);
             if (possible)

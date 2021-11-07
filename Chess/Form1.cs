@@ -169,11 +169,19 @@ namespace Chess
             int column_c = buttonPressed.Name[0] - 65;
             int row_c = (int)char.GetNumericValue(buttonPressed.Name[1]) - 1;
 
+
             number_of_click++;
             if (number_of_click == 1)
-            {
-                from.Row = row_c;
-                from.Column = column_c;
+            { 
+                if(buttonPressed.BackgroundImage != null)
+                {
+                    from.Row = row_c;
+                    from.Column = column_c;
+                }
+                else
+                {
+                    number_of_click--;
+                }
             }
             if (number_of_click == 2)
             {
@@ -306,6 +314,10 @@ namespace Chess
                     #endregion
                 }
             }
+        }
+        private void End_game(string result)
+        {
+            
         }
     }
 }
