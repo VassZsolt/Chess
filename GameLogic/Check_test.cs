@@ -87,6 +87,10 @@ namespace GameLogic
                     {
                         GameLogic.King king = new GameLogic.King();
                         is_check = king.entering_into_check(to, king_position);
+                        if(to.Row==king_position.Row && to.Column==king_position.Column)
+                        {
+                            is_check = true;
+                        }
                         break;
                     }
             }

@@ -54,7 +54,8 @@ namespace GameLogic
                         temp_from.Column = column;
                         if (board[temp_from.Row, temp_from.Column] != null)
                         {
-                            if (from.Row != temp_from.Row || from.Column != temp_from.Column)
+                            if (!(from.Row == temp_from.Row && from.Column == temp_from.Column) 
+                                && !(to.Row == temp_from.Row && to.Column   == temp_from.Column)) //We should'nt examine the moving Piece and the hitted one if it exists
                             {
                                 if (board[temp_from.Row, temp_from.Column].Color != board[from.Row,from.Column].Color)
                                 {

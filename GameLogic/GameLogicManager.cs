@@ -47,8 +47,8 @@ namespace GameLogic
             board[7, 0].Type = PieceType.Rook;
             board[7, 1].Type = PieceType.Knight;
             board[7, 2].Type = PieceType.Bishop;
-            board[7, 3].Type = PieceType.King;
-            board[7, 4].Type = PieceType.Queen;
+            board[7, 3].Type = PieceType.Queen;
+            board[7, 4].Type = PieceType.King;
             board[7, 5].Type = PieceType.Bishop;
             board[7, 6].Type = PieceType.Knight;
             board[7, 7].Type = PieceType.Rook;
@@ -189,6 +189,7 @@ namespace GameLogic
                     {
                         GameLogic.King king = new GameLogic.King();
                         possible = king.entering_into_check(from, to);
+
                     }
                     else
                     {
@@ -288,6 +289,7 @@ namespace GameLogic
                     {
                         check_from.Row = to.Row;
                         check_from.Column = to.Column;
+
                     }
                     last_team = board[from.Row, from.Column].Color;
                     Move(from, to);
