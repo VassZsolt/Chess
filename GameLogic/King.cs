@@ -12,7 +12,6 @@ namespace GameLogic
         ChessPiece[,] board = GameLogicManager.board;
         public bool is_possible_move(Coordinate from, Coordinate to)
         {
-
             if (to.Row == from.Row + 1 && to.Column == from.Column
              || to.Row == from.Row - 1 && to.Column == from.Column
              || to.Row == from.Row && to.Column == from.Column + 1
@@ -22,7 +21,6 @@ namespace GameLogic
              || to.Row == from.Row - 1 && to.Column == from.Column + 1
              || to.Row == from.Row - 1 && to.Column == from.Column - 1)
             {
-
                 if (board[to.Row, to.Column] is not null)
                 {
                     if (board[from.Row, from.Column].Color == board[to.Row, to.Column].Color)
@@ -30,7 +28,6 @@ namespace GameLogic
                         possible = false;
                     }
                 }
-
             }
             else
             {
@@ -45,19 +42,43 @@ namespace GameLogic
             {
                 bool hitable = false;
                 int can_hit = 0;
+                //---------------------------------------
+
+                bool temp_to_Needed = false;
+                Coordinate temp_to = new Coordinate();
+                PieceType temp_to_Type = new PieceType();
+                PieceColor temp_to_Color = new PieceColor();
+                if (board[to.Row, to.Column] != null) //If at the coordinate "to" there are any pieces we should make a copy
+                {
+                    temp_to_Needed = true;
+                    temp_to.Row = to.Row;
+                    temp_to.Column = to.Column;
+                    temp_to_Color = board[to.Row, to.Column].Color;
+                    temp_to_Type = board[to.Row, to.Column].Type;
+                }
+                //------------------------------------------------------
+
+                bool swap = true; //we make a temporary replace from the "from" coordinate to the "to" coordinate
+                board[to.Row, to.Column] = new ChessPiece();
+                board[to.Row, to.Column].Type = board[from.Row, from.Column].Type;
+                board[to.Row, to.Column].Color = board[from.Row, from.Column].Color;
+                board[from.Row, from.Column] = null;
+                //-------------------------------------------------------
+
+
+                Coordinate temp_from = new Coordinate();
                 for (int row = 0; row < 8; row++)
                 {
                     for (int column = 0; column < 8; column++)
                     {
-                        Coordinate temp_from = new Coordinate();
                         temp_from.Row = row;
                         temp_from.Column = column;
-                        if (board[temp_from.Row, temp_from.Column] != null)
+                        if (board[temp_from.Row, temp_from.Column] != null) //we can only move with piece
                         {
                             if (!(from.Row == temp_from.Row && from.Column == temp_from.Column) 
                                 && !(to.Row == temp_from.Row && to.Column   == temp_from.Column)) //We should'nt examine the moving Piece and the hitted one if it exists
                             {
-                                if (board[temp_from.Row, temp_from.Column].Color != board[from.Row,from.Column].Color)
+                                if (board[temp_from.Row, temp_from.Column].Color != board[to.Row,to.Column].Color) //the friendly pieces can't hit us
                                 {
                                     switch (board[temp_from.Row, temp_from.Column].Type)
                                     {
@@ -106,6 +127,22 @@ namespace GameLogic
                                 }
                             }
                         }
+                    }
+                }
+                if (swap) //we make back the replace
+                {
+                    board[from.Row, from.Column] = new ChessPiece();
+                    board[from.Row, from.Column].Type = board[to.Row, to.Column].Type;
+                    board[from.Row, from.Column].Color = board[to.Row, to.Column].Color;
+                    board[to.Row, to.Column] = null;
+
+                    if(temp_to_Needed)
+                    {
+                        board[to.Row, to.Column] = new ChessPiece();
+                        to.Row = temp_to.Row;
+                        to.Column = temp_to.Column;
+                        board[to.Row, to.Column].Color = temp_to_Color;
+                        board[to.Row, to.Column].Type = temp_to_Type;
                     }
                 }
                 if(can_hit==0)
