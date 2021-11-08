@@ -129,59 +129,11 @@ namespace GameLogic
         {
             bool possible = false;
 
-            if (board[from.Row, from.Column].Color!=last_team)
+            if (board[from.Row, from.Column].Color != last_team)
             {
                 if (is_check == false)
                 {
-                    switch (board[from.Row, from.Column].Type)
-                    {
-             
-                        case PieceType.Pawn:
-                            {
-                                bool moveable = false;
-                                bool hitable = false;
-                                GameLogic.Pawn pawn = new GameLogic.Pawn();
-                                moveable = pawn.is_possible_move(from, to);
-                                hitable = pawn.is_possible_hit(from, to);
-                                if (moveable || hitable)
-                                {
-                                    possible = true;
-                                }
-                                break;
-
-                            }
-                        case PieceType.Knight:
-                            {
-                                GameLogic.Knight knight = new GameLogic.Knight();
-                                possible = knight.is_possible_move(from, to);
-                                break;
-                            }
-                        case PieceType.Rook:
-                            {
-                                GameLogic.Rook rook = new GameLogic.Rook();
-                                possible = rook.is_possible_move(from, to);
-                                break;
-                            }
-                        case PieceType.Bishop:
-                            {
-                                GameLogic.Bishop bishop = new GameLogic.Bishop();
-                                possible = bishop.is_possible_move(from, to);
-                                break;
-                            }
-                        case PieceType.Queen:
-                            {
-                                GameLogic.Queen queen = new GameLogic.Queen();
-                                possible = queen.is_possible_move(from, to);
-                                break;
-                            }
-                        case PieceType.King:
-                            {
-                                GameLogic.King king = new GameLogic.King();
-                                possible = king.entering_into_check(from, to);
-                                break;
-                            }
-
-                    }
+                    possible = chess_test.is_possible_Move(from, to);
                 }
                 else
                 {
@@ -189,107 +141,32 @@ namespace GameLogic
                     {
                         GameLogic.King king = new GameLogic.King();
                         possible = king.entering_into_check(from, to);
-
                     }
                     else
                     {
-                        List<Coordinate> hitable_from = chess_test.Hitable(from, to);
-                        if (hitable_from.Contains(from) && to.Row == check_from.Row && to.Column == check_from.Column)
+                        Coordinate hitable_from = chess_test.Hitable_from(from, to);
+                        if (hitable_from.Row == from.Row && hitable_from.Column == from.Column
+                            && to.Row == check_from.Row && to.Column == check_from.Column)
                         {
-                            switch (board[from.Row, from.Column].Type)
-                            {
-                                case PieceType.Pawn:
-                                    {
-                                        GameLogic.Pawn pawn = new GameLogic.Pawn();
-                                        possible = pawn.can_give_chess(from, to);
-                                        break;
-
-                                    }
-                                case PieceType.Knight:
-                                    {
-                                        GameLogic.Knight knight = new GameLogic.Knight();
-                                        possible = knight.is_possible_move(from, to);
-                                        break;
-                                    }
-                                case PieceType.Rook:
-                                    {
-                                        GameLogic.Rook rook = new GameLogic.Rook();
-                                        possible = rook.is_possible_move(from, to);
-                                        break;
-                                    }
-                                case PieceType.Bishop:
-                                    {
-                                        GameLogic.Bishop bishop = new GameLogic.Bishop();
-                                        possible = bishop.is_possible_move(from, to);
-                                        break;
-                                    }
-                                case PieceType.Queen:
-                                    {
-                                        GameLogic.Queen queen = new GameLogic.Queen();
-                                        possible = queen.is_possible_move(from,to);
-                                        break;
-                                    }
-                                case PieceType.King:
-                                    {
-                                        GameLogic.King king = new GameLogic.King();
-                                        possible = king.entering_into_check(from, to);
-                                        break;
-                                    }
-                            }
+                            possible = true;
                         }
                         else
                         {
                             List<Coordinate> protectable_from = chess_test.Protectable(from, to);
                             if (protectable_from.Contains(to))
                             {
-                                switch (board[from.Row, from.Column].Type)
-                                {
-                                    case PieceType.Pawn:
-                                        {
-                                            GameLogic.Pawn pawn = new GameLogic.Pawn();
-                                            possible = pawn.is_possible_move(from, to);
-                                            break;
-
-                                        }
-                                    case PieceType.Knight:
-                                        {
-                                            GameLogic.Knight knight = new GameLogic.Knight();
-                                            possible = knight.is_possible_move(from, to);
-                                            break;
-                                        }
-                                    case PieceType.Rook:
-                                        {
-                                            GameLogic.Rook rook = new GameLogic.Rook();
-                                            possible = rook.is_possible_move(from, to);
-                                            break;
-                                        }
-                                    case PieceType.Bishop:
-                                        {
-                                            GameLogic.Bishop bishop = new GameLogic.Bishop();
-                                            possible = bishop.is_possible_move(from, to);
-                                            break;
-                                        }
-                                    case PieceType.Queen:
-                                        {
-                                            GameLogic.Queen queen = new GameLogic.Queen();
-                                            possible = queen.is_possible_move(from, to);
-                                            break;
-                                        }
-                                }
+                                possible = true;
                             }
                         }
-
                     }
-
                 }
                 if (possible)
                 {
-                    is_check = chess_test.is_Check(from, to, true);
+                    is_check = chess_test.is_Check(from, to, false);
                     if (is_check)
                     {
                         check_from.Row = to.Row;
                         check_from.Column = to.Column;
-
                     }
                     last_team = board[from.Row, from.Column].Color;
                     Move(from, to);

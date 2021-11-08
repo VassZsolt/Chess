@@ -95,6 +95,7 @@ namespace Chess
             this.C8 = new System.Windows.Forms.Button();
             this.A8 = new System.Windows.Forms.Button();
             this.Finish = new System.Windows.Forms.Label();
+            this.Result = new System.Windows.Forms.Label();
             this.Panel_Board.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -753,11 +754,20 @@ namespace Chess
             this.Finish.Size = new System.Drawing.Size(0, 15);
             this.Finish.TabIndex = 1;
             // 
+            // Result
+            // 
+            this.Result.AutoSize = true;
+            this.Result.Location = new System.Drawing.Point(769, 146);
+            this.Result.Name = "Result";
+            this.Result.Size = new System.Drawing.Size(0, 15);
+            this.Result.TabIndex = 2;
+            // 
             // Form_ChessBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.Result);
             this.Controls.Add(this.Finish);
             this.Controls.Add(this.Panel_Board);
             this.Name = "Form_ChessBoard";
@@ -837,6 +847,7 @@ namespace Chess
         private System.Windows.Forms.Button C8;
         private System.Windows.Forms.Button A8;
         private System.Windows.Forms.Label Finish;
+        private System.Windows.Forms.Label Result;
     }
 }
 

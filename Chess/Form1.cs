@@ -312,12 +312,13 @@ namespace Chess
                         button.BackgroundImage = null;
                     }
                     #endregion
+                    
                 }
             }
         }
-        private void End_game(string result)
+        /*private void End_game(string result)
         {
-            
-        }
+            Finish.Text("Karácsonyfaizzó");
+        }*/
     }
 }
