@@ -27,6 +27,7 @@ namespace Chess
 
         public Form_ChessBoard()
         {
+
             InitializeComponent();
         }
 
@@ -44,7 +45,7 @@ namespace Chess
                 #region _Teams_show
                 if (c_board[coordinate.Row, coordinate.Column] != null)
                 {
-                    switch (c_board[coordinate.Row,coordinate.Column].Type)
+                    switch (c_board[coordinate.Row, coordinate.Column].Type)
                     {
                         case PieceType.Pawn:
                             {
@@ -153,7 +154,9 @@ namespace Chess
                     button.BackgroundImageLayout = ImageLayout.Center;
                 }
                 #endregion
+                End_game();
                 button.Click += ButtonClicked;
+
 
             }
         }
@@ -169,8 +172,8 @@ namespace Chess
 
             number_of_click++;
             if (number_of_click == 1)
-            { 
-                if(buttonPressed.BackgroundImage != null)
+            {
+                if (buttonPressed.BackgroundImage != null)
                 {
                     from.Row = row_c;
                     from.Column = column_c;
@@ -215,7 +218,7 @@ namespace Chess
                                     }
                                     break;
                                 }
-                            case PieceType.Knight: 
+                            case PieceType.Knight:
                                 {
                                     switch (c_board[coordinate.Row, coordinate.Column].Color)
                                     {
@@ -311,9 +314,17 @@ namespace Chess
                 }
             }
         }
-        /*private void End_game(string result)
+
+        public void End_game()
         {
-            Finish.Text("Karácsonyfaizzó");
-        }*/
+            Form_ChessBoard form = new Form_ChessBoard();
+            form.Finish.Text = "This is check-mate. Congratulation!";
+            //form.Win.Text = "xy team won this game.";
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

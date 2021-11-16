@@ -11,6 +11,7 @@ namespace GameLogic
         public bool is_check = false;
         public Coordinate check_from = new Coordinate();
         public PieceColor last_team = PieceColor.Black;
+        
 
         public ChessPiece[,] Initialize()
         {
@@ -179,6 +180,7 @@ namespace GameLogic
                         if (is_check)
                         {
                             //Finish Check_Mate
+                            
                         }
                     }
                     else
