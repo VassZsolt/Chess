@@ -21,11 +21,8 @@ namespace Chess
             return Path.Combine(
              Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Images", figureFileName);
         }
-
         public GameLogicManager gameLogicManager;
-
         public int number_of_click = 0;
-
         public int db = 0;
 
         public Form_ChessBoard()
@@ -187,9 +184,8 @@ namespace Chess
             {
                 to.Row = row_c;
                 to.Column = column_c;
-                ChessPiece[,] c_board = gameLogicManager.Is_possible_move(from, to);
+                ChessPiece[,] c_board = gameLogicManager.GameLogic(from, to);
                 number_of_click = 0;
-
 
                 foreach (Button button in Panel_Board.Controls)
                 {
@@ -311,8 +307,7 @@ namespace Chess
                     {
                         button.BackgroundImage = null;
                     }
-                    #endregion
-                    
+                    #endregion 
                 }
             }
         }

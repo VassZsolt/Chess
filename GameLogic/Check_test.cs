@@ -10,8 +10,9 @@ namespace GameLogic
     {
         bool is_check = false;
         ChessPiece[,] board = GameLogicManager.board;
-        public Coordinate get_King_position(Coordinate from, Coordinate to)
+        public List<Coordinate> get_King_positions()
         {
+            List<Coordinate> king_positions = new List<Coordinate>();
             Coordinate king_position = new Coordinate();
             for (int row = 0; row < 8; row++)
             {
@@ -21,21 +22,14 @@ namespace GameLogic
                     {
                         if (board[row, column].Type == PieceType.King)
                         {
-                            if (board[row, column].Color != board[from.Row, from.Column].Color)
-                            {
-                                king_position.Row = row;
-                                king_position.Column = column;
-                            }
+                            king_position.Row = row;
+                            king_position.Column = column;
+                            king_positions.Add(king_position);
                         }
                     }
                 }
             }
-            if (board[from.Row, from.Column].Type == PieceType.King)
-            {
-                king_position.Row = to.Row;
-                king_position.Column = to.Column;
-            }
-            return king_position;
+            return king_positions;
         }
         public bool is_possible_Move(Coordinate from, Coordinate to)
         {
@@ -91,106 +85,91 @@ namespace GameLogic
             }
             return possible;
         }
-        public bool is_Check(Coordinate from, Coordinate to, bool swap)
+
+        public bool is_Check(PieceColor target_king_color) //we use the color of the enemy king (like target color)
         {
-            bool possible = false;
-            Coordinate hitable_from = new Coordinate();
-            Coordinate king_position = get_King_position(from, to);
+            bool is_check = false;
+            List<Coordinate> king_positions = get_King_positions();
             bool hitable = false;
-            int can_hit = 0;
-            //---------------------------------------
+            Coordinate target_king_position = new Coordinate();
 
-            bool temp_to_Needed = false;
-            Coordinate temp_to = new Coordinate();
-            PieceType temp_to_Type = new PieceType();
-            PieceColor temp_to_Color = new PieceColor();
-            if (board[to.Row, to.Column] != null) //If at the coordinate "to" there are any pieces we should make a copy
+            if (target_king_color == board[king_positions[0].Row, king_positions[0].Column].Color)
             {
-                temp_to_Needed = true;
-                temp_to.Row = to.Row;
-                temp_to.Column = to.Column;
-                temp_to_Color = board[to.Row, to.Column].Color;
-                temp_to_Type = board[to.Row, to.Column].Type;
+                target_king_position.Row = king_positions[0].Row;
+                target_king_position.Column = king_positions[0].Column;
             }
-            //------------------------------------------------------
-            if(!swap)
+            else
             {
-                swap = true; //we make a temporary replace from the "from" coordinate to the "to" coordinate
-                board[to.Row, to.Column] = new ChessPiece();
-                board[to.Row, to.Column].Type = board[from.Row, from.Column].Type;
-                board[to.Row, to.Column].Color = board[from.Row, from.Column].Color;
-                board[from.Row, from.Column] = null;
+                target_king_position.Row = king_positions[1].Row;
+                target_king_position.Column = king_positions[1].Column;
             }
-            //-------------------------------------------------------
 
-            switch (board[to.Row, to.Column].Type)
+            for (int row = 0; row < 8; row++)
             {
-                case PieceType.Pawn:
-                    {
-                        GameLogic.Pawn pawn = new GameLogic.Pawn();
-                        hitable = pawn.can_give_chess(to, king_position);
-                        break;
-
-                    }
-                case PieceType.Knight:
-                    {
-                        GameLogic.Knight knight = new GameLogic.Knight();
-                        hitable = knight.is_possible_move(to, king_position);
-                        break;
-                    }
-                case PieceType.Rook:
-                    {
-                        GameLogic.Rook rook = new GameLogic.Rook();
-                        hitable = rook.is_possible_move(to, king_position);
-                        break;
-                    }
-                case PieceType.Bishop:
-                    {
-                        GameLogic.Bishop bishop = new GameLogic.Bishop();
-                        hitable = bishop.is_possible_move(to, king_position);
-                        break;
-                    }
-                case PieceType.Queen:
-                    {
-                        GameLogic.Queen queen = new GameLogic.Queen();
-                        hitable = queen.is_possible_move(to, king_position);
-                        break;
-                    }
-            }
-            if (hitable)
-            {
-                can_hit++;
-            }
-            if (swap) //we make back the replace
-            {
-                board[from.Row, from.Column] = new ChessPiece();
-                board[from.Row, from.Column].Type = board[to.Row, to.Column].Type;
-                board[from.Row, from.Column].Color = board[to.Row, to.Column].Color;
-                board[to.Row, to.Column] = null;
-
-                if (temp_to_Needed)
+                for (int column = 0; column < 8; column++)
                 {
-                    board[to.Row, to.Column] = new ChessPiece();
-                    to.Row = temp_to.Row;
-                    to.Column = temp_to.Column;
-                    board[to.Row, to.Column].Color = temp_to_Color;
-                    board[to.Row, to.Column].Type = temp_to_Type;
+                    Coordinate temp_from = new Coordinate();
+                    temp_from.Row = row;
+                    temp_from.Column = column;
+                    if (board[temp_from.Row, temp_from.Column] != null) //we can only move with piece
+                    {
+                        if (board[temp_from.Row, temp_from.Column].Color != target_king_color) //we can't hit friendly pieces
+                        {
+                            switch (board[temp_from.Row, temp_from.Column].Type)
+                            {
+                                case PieceType.Pawn:
+                                    {
+                                        GameLogic.Pawn pawn = new GameLogic.Pawn();
+                                        hitable = pawn.can_give_chess(temp_from, target_king_position);
+                                        break;
+
+                                    }
+                                case PieceType.Knight:
+                                    {
+                                        GameLogic.Knight knight = new GameLogic.Knight();
+                                        hitable = knight.is_possible_move(temp_from, target_king_position);
+                                        break;
+                                    }
+                                case PieceType.Rook:
+                                    {
+                                        GameLogic.Rook rook = new GameLogic.Rook();
+                                        hitable = rook.is_possible_move(temp_from, target_king_position);
+                                        break;
+                                    }
+                                case PieceType.Bishop:
+                                    {
+                                        GameLogic.Bishop bishop = new GameLogic.Bishop();
+                                        hitable = bishop.is_possible_move(temp_from, target_king_position);
+                                        break;
+                                    }
+                                case PieceType.Queen:
+                                    {
+                                        GameLogic.Queen queen = new GameLogic.Queen();
+                                        hitable = queen.is_possible_move(temp_from, target_king_position);
+                                        break;
+                                    }
+                            }
+                            if (hitable)
+                            {
+                                is_check = true;
+                            }
+
+                        }
+                    }
                 }
             }
-            if (can_hit != 0)
-            {
-                possible = true;
-            }
-            return possible;
+            return is_check;
         }
-        public Coordinate Hitable_from(Coordinate from, Coordinate to)
-        {
-            bool possible = is_possible_Move(from,to);
-            Coordinate hitable_from = new Coordinate();
 
-            if (possible)
+        public Coordinate Hitable_from(Coordinate to)
+        {
+            Coordinate hitable_from = new Coordinate();
+            hitable_from.Row = -1;
+            hitable_from.Column = -1;
+            bool hitable = false;
+
+            if (!hitable)
             {
-                bool hitable = false;
                 for (int row = 0; row < 8; row++)
                 {
                     for (int column = 0; column < 8; column++)
@@ -252,24 +231,17 @@ namespace GameLogic
                                 }
                             }
                         }
-
                     }
                 }
             }
-            else
-            {
-                hitable_from.Row = -1;
-                hitable_from.Column = -1;
-            }
             return hitable_from;
         }
-
         public List<Coordinate> Protectable(Coordinate from, Coordinate to)
         {
-            bool possible = is_possible_Move(from,to);
+            bool possible = is_possible_Move(from, to);
             Coordinate check_from = new Coordinate();
             List<Coordinate> protectable = new List<Coordinate>();
-            
+
             if (possible) //amennyiben a lépés szabályos
             {
                 Coordinate king_position = new Coordinate();
@@ -372,7 +344,7 @@ namespace GameLogic
                             board[row, column].Color = board[king_position.Row, king_position.Column].Color;
                             protectable_coordinate.Row = row;
                             protectable_coordinate.Column = column;
-                            is_check = is_Check(check_from, check_from, true);
+                            is_check = is_Check(board[from.Row,from.Column].Color);
                             if (is_check == false)
                             {
                                 protectable.Add(protectable_coordinate);
