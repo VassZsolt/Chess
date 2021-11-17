@@ -38,5 +38,10 @@ namespace Chess
             Form_ChessBoard local_game = new Form_ChessBoard();
             local_game.ShowDialog();
         }
+
+        private void b_Online_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

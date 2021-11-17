@@ -32,6 +32,8 @@ namespace Chess
             this.Local = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.b_Online = new System.Windows.Forms.Button();
+            this.Version = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Local
@@ -67,12 +69,35 @@ namespace Chess
     "   ║--╦ --  ├─┤--│││--├┤-\r\n╚═╝--┴--┴--└─┘--└─┘--└─┘----╚═╝----┴--┴--┴   ┴--└─┘";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
+            // b_Online
+            // 
+            this.b_Online.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.b_Online.Location = new System.Drawing.Point(517, 378);
+            this.b_Online.Name = "b_Online";
+            this.b_Online.Size = new System.Drawing.Size(166, 46);
+            this.b_Online.TabIndex = 4;
+            this.b_Online.Text = "Play Online";
+            this.b_Online.UseVisualStyleBackColor = true;
+            this.b_Online.Click += new System.EventHandler(this.b_Online_Click);
+            // 
+            // Version
+            // 
+            this.Version.AutoSize = true;
+            this.Version.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Version.Location = new System.Drawing.Point(12, 724);
+            this.Version.Name = "Version";
+            this.Version.Size = new System.Drawing.Size(45, 21);
+            this.Version.TabIndex = 5;
+            this.Version.Text = "V 1.0";
+            // 
             // ChessStart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SaddleBrown;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.Version);
+            this.Controls.Add(this.b_Online);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Local);
@@ -89,5 +114,7 @@ namespace Chess
         private System.Windows.Forms.Button Local;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button b_Online;
+        private System.Windows.Forms.Label Version;
     }
 }

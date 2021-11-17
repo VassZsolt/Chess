@@ -27,7 +27,6 @@ namespace Chess
 
         public Form_ChessBoard()
         {
-
             InitializeComponent();
         }
 
