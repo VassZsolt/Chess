@@ -359,7 +359,7 @@ namespace Chess
                 coordinate.Column = column_c;
                 coordinate.Row = row_c;
                 string json = JsonConvert.SerializeObject(coordinate);
-                httpClient.PostAsync(enemyURL, new StringContent(json));
+                httpClient.PostAsync(enemyURL, new StringContent(json)).Wait();
             }
         }
 
