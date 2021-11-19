@@ -126,7 +126,7 @@ namespace GameLogic
             return board;
         }
 
-        public ChessPiece[,] GameLogic(Coordinate from, Coordinate to)
+        public void GameLogic(Coordinate from, Coordinate to)
         {
             bool possible = false;
 
@@ -227,9 +227,8 @@ namespace GameLogic
                         }
                     }                    
                 }
-                return board;
+                return;
             }
-            return board;
         }
     }
 }

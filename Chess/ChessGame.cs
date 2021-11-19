@@ -24,7 +24,7 @@ namespace Chess
         public GameLogicManager gameLogicManager;
         public int number_of_click = 0;
         public int db = 0;
-
+        private ChessPiece[,] c_board;
         public Form_ChessBoard()
         {
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace Chess
         public void Form1_Load(object sender, EventArgs e)
         {
             gameLogicManager = new GameLogicManager();
-            ChessPiece[,] c_board = gameLogicManager.Initialize();
+            c_board = gameLogicManager.Initialize();
 
             foreach (Button button in Panel_Board.Controls)
             {
@@ -186,7 +186,7 @@ namespace Chess
             {
                 to.Row = row_c;
                 to.Column = column_c;
-                ChessPiece[,] c_board = gameLogicManager.GameLogic(from, to);
+                gameLogicManager.GameLogic(from, to);
                 number_of_click = 0;
 
                 foreach (Button button in Panel_Board.Controls)
