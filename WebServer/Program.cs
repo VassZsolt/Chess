@@ -21,7 +21,7 @@ namespace WebServer
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:"+portnumber);
+                    webBuilder.UseUrls("http://0.0.0.0:"+portnumber);
                 })
                 .Build()
                 .Run();
