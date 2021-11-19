@@ -126,9 +126,9 @@ namespace GameLogic
             return board;
         }
 
-        public void GameLogic(Coordinate from, Coordinate to)
+        public bool GameLogic(Coordinate from, Coordinate to)
         {
-            bool possible = false;
+            bool possible = false; // This is not a possible move
 
             if (board[from.Row, from.Column].Color != last_team)
             {
@@ -180,6 +180,7 @@ namespace GameLogic
                         if (is_check)
                         {
                             //Finish Check_Mate
+                            return true;
                             
                         }
                     }
@@ -227,8 +228,9 @@ namespace GameLogic
                         }
                     }                    
                 }
-                return;
+                return false;
             }
+            return false;
         }
     }
 }

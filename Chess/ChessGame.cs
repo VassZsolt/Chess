@@ -153,7 +153,6 @@ namespace Chess
                     button.BackgroundImageLayout = ImageLayout.Center;
                 }
                 #endregion
-                End_game();
                 button.Click += ButtonClicked;
 
 
@@ -186,8 +185,13 @@ namespace Chess
             {
                 to.Row = row_c;
                 to.Column = column_c;
-                gameLogicManager.GameLogic(from, to);
+                bool is_check_mate=gameLogicManager.GameLogic(from, to);
                 number_of_click = 0;
+
+                if(is_check_mate)
+                {
+                    End_game();
+                }
 
                 foreach (Button button in Panel_Board.Controls)
                 {
@@ -316,9 +320,8 @@ namespace Chess
 
         public void End_game()
         {
-            Form_ChessBoard form = new Form_ChessBoard();
-            form.Finish.Text = "This is check-mate. Congratulation!";
-            //form.Win.Text = "xy team won this game.";
+            MessageBox.Show("Win!");
+            return;
         }
 
         private void label1_Click(object sender, EventArgs e)
