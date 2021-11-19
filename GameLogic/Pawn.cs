@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Pawn
+    internal class Pawn
     {
         bool possible = true;
         ChessPiece[,] board = GameLogicManager.board;
-        public bool is_possible_move(Coordinate from, Coordinate to)
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
             if (board[to.Row, to.Column] is null)
             {
@@ -34,7 +34,7 @@ namespace GameLogic
 
             return possible;
         }
-        public bool is_possible_hit(Coordinate from, Coordinate to)
+        internal bool is_possible_hit(Coordinate from, Coordinate to)
         {
             if (board[to.Row, to.Column] is not null)
             {
@@ -57,7 +57,7 @@ namespace GameLogic
 
             return possible;
         }
-        public bool can_give_chess(Coordinate from, Coordinate to)
+        internal bool can_give_chess(Coordinate from, Coordinate to)
         {
             if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
              || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column - 1                   //Black Pawn hit right

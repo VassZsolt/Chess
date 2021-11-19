@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Knight
+    internal class Knight
     {
-        public bool is_possible_move(Coordinate from, Coordinate to)
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             ChessPiece[,] board = GameLogicManager.board;

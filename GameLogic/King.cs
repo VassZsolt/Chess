@@ -10,7 +10,7 @@ namespace GameLogic
     {
         bool possible = true;
         ChessPiece[,] board = GameLogicManager.board;
-        public bool is_possible_move(Coordinate from, Coordinate to)
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
             if (to.Row == from.Row + 1 && to.Column == from.Column
              || to.Row == from.Row - 1 && to.Column == from.Column
@@ -35,7 +35,7 @@ namespace GameLogic
             }
             return possible;
         }
-        public bool entering_into_check(Coordinate from, Coordinate to)
+        internal bool entering_into_check(Coordinate from, Coordinate to)
         {
             possible = is_possible_move(from, to);
             if (possible)

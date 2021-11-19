@@ -10,7 +10,7 @@ namespace GameLogic
     {
         bool is_check = false;
         ChessPiece[,] board = GameLogicManager.board;
-        public List<Coordinate> get_King_positions()
+        internal List<Coordinate> get_King_positions()
         {
             List<Coordinate> king_positions = new List<Coordinate>();
             Coordinate king_position = new Coordinate();
@@ -31,7 +31,7 @@ namespace GameLogic
             }
             return king_positions;
         }
-        public bool is_possible_Move(Coordinate from, Coordinate to)
+        internal bool is_possible_Move(Coordinate from, Coordinate to)
         {
             bool possible = false;
             switch (board[from.Row, from.Column].Type)
@@ -86,7 +86,7 @@ namespace GameLogic
             return possible;
         }
 
-        public bool is_Check(PieceColor target_king_color) //we use the color of the enemy king (like target color)
+        internal bool is_Check(PieceColor target_king_color) //we use the color of the enemy king (like target color)
         {
             bool is_check = false;
             List<Coordinate> king_positions = get_King_positions();
@@ -161,7 +161,7 @@ namespace GameLogic
             return is_check;
         }
 
-        public Coordinate Hitable_from(Coordinate to)
+        internal Coordinate Hitable_from(Coordinate to)
         {
             Coordinate hitable_from = new Coordinate();
             hitable_from.Row = -1;
@@ -236,7 +236,7 @@ namespace GameLogic
             }
             return hitable_from;
         }
-        public List<Coordinate> Protectable(Coordinate from, Coordinate to)
+        internal List<Coordinate> Protectable(Coordinate from, Coordinate to)
         {
             bool possible = is_possible_Move(from, to);
             Coordinate check_from = new Coordinate();

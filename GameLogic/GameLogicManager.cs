@@ -5,13 +5,13 @@ namespace GameLogic
 {
     public class GameLogicManager
     {
-        public static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
-        public static ChessPiece[,] copy_of_board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
+        internal static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
+        internal static ChessPiece[,] copy_of_board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
         GameLogic.Check_test chess_test = new GameLogic.Check_test();
-        public bool is_check = false;
-        public Coordinate check_from = new Coordinate();
-        public PieceColor last_team = PieceColor.Black;
-        
+        internal bool is_check = false;
+        internal Coordinate check_from = new Coordinate();
+        internal PieceColor last_team = PieceColor.Black;
+
 
         public ChessPiece[,] Initialize()
         {
@@ -63,7 +63,7 @@ namespace GameLogic
             return board;
         }
 
-        public ChessPiece[,] Move(Coordinate from, Coordinate to)
+        internal ChessPiece[,] Move(Coordinate from, Coordinate to)
         {
             if (board[to.Row, to.Column] is not null)
             {

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Rook
+    internal class Rook
     {
-        public bool is_possible_move(Coordinate from, Coordinate to)
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             int i = 0; //used as row or column in loops
