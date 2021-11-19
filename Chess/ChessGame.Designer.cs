@@ -1168,6 +1168,7 @@ namespace Chess
             this.Controls.Add(this.Panel_Board);
             this.Name = "Form_ChessBoard";
             this.Text = "ChessGame";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_ChessBoard_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Panel_Board.ResumeLayout(false);
             this.ResumeLayout(false);

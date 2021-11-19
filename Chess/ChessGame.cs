@@ -10,7 +10,9 @@ using System.Windows.Forms;
 using GameLogic;
 using System.IO;
 using System.Reflection;
-
+using Newtonsoft.Json;
+using System.Threading;
+using System.Net.Http;
 
 namespace Chess
 {
@@ -21,6 +23,23 @@ namespace Chess
             return Path.Combine(
              Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Images", figureFileName);
         }
+
+        internal void HandleOnlineCommand(string command)
+        {
+            Coordinate coordinates = JsonConvert.DeserializeObject<Coordinate>(command);
+            foreach (Button button in Panel_Board.Controls)
+            {
+                int Column = button.Name[0] - 65;
+                int Row = (int)char.GetNumericValue(button.Name[1]) - 1;
+
+                if(coordinates.Row==Row && coordinates.Column == Column)
+                {
+                    ButtonClicked2(button, false);
+                }
+                
+            }
+        }
+
         public GameLogicManager gameLogicManager;
         public int number_of_click = 0;
         public int db = 0;
@@ -28,7 +47,16 @@ namespace Chess
         public Form_ChessBoard()
         {
             InitializeComponent();
+            this.is_online_game = false;
         }
+        public Form_ChessBoard(bool is_Online, string enemyURL)
+        {
+            InitializeComponent();
+            this.is_online_game = is_Online;
+            this.enemyURL = enemyURL;
+            httpClient = new HttpClient();
+        }
+
 
         public void Form1_Load(object sender, EventArgs e)
         {
@@ -161,7 +189,16 @@ namespace Chess
 
         public Coordinate from = new Coordinate();
         public Coordinate to = new Coordinate();
+        private readonly bool is_online_game;
+        private readonly string enemyURL;
+        private readonly HttpClient httpClient;
+
         private void ButtonClicked(object sender, EventArgs e)
+        {
+            ButtonClicked2(sender, true);
+        }
+
+        private void ButtonClicked2(object sender, bool is_local_click)
         {
             Button buttonPressed = (Button)sender;
             int column_c = buttonPressed.Name[0] - 65;
@@ -185,10 +222,10 @@ namespace Chess
             {
                 to.Row = row_c;
                 to.Column = column_c;
-                bool is_check_mate=gameLogicManager.GameLogic(from, to);
+                bool is_check_mate = gameLogicManager.GameLogic(from, to);
                 number_of_click = 0;
 
-                if(is_check_mate)
+                if (is_check_mate)
                 {
                     End_game();
                 }
@@ -314,7 +351,15 @@ namespace Chess
                         button.BackgroundImage = null;
                     }
                     #endregion 
-                }
+                }     
+            }
+            if(is_online_game&&is_local_click)
+            {
+                Coordinate coordinate = new Coordinate();
+                coordinate.Column = column_c;
+                coordinate.Row = row_c;
+                string json = JsonConvert.SerializeObject(coordinate);
+                httpClient.PostAsync(enemyURL, new StringContent(json));
             }
         }
 
@@ -327,6 +372,11 @@ namespace Chess
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form_ChessBoard_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);  //kill Chess.exe from Handler
         }
     }
 }

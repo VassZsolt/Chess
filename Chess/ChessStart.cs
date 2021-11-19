@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WebServer;
 
 namespace Chess
 {
     public partial class ChessStart : Form
     {
+        private OnlineGameHandler onlineGameHandler;
         public ChessStart()
         {
             InitializeComponent();
@@ -41,7 +43,9 @@ namespace Chess
 
         private void b_Online_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            onlineGameHandler = new OnlineGameHandler();
+            onlineGameHandler.Initialize(int.Parse(textbox_Portnumber.Text), textbox_EnemyURL.Text);
         }
     }
 }

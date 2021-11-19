@@ -34,6 +34,10 @@ namespace Chess
             this.label2 = new System.Windows.Forms.Label();
             this.b_Online = new System.Windows.Forms.Button();
             this.Version = new System.Windows.Forms.Label();
+            this.textbox_Portnumber = new System.Windows.Forms.TextBox();
+            this.textbox_EnemyURL = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Local
@@ -90,12 +94,48 @@ namespace Chess
             this.Version.TabIndex = 5;
             this.Version.Text = "V 1.0";
             // 
+            // textbox_Portnumber
+            // 
+            this.textbox_Portnumber.Location = new System.Drawing.Point(583, 454);
+            this.textbox_Portnumber.Name = "textbox_Portnumber";
+            this.textbox_Portnumber.Size = new System.Drawing.Size(100, 23);
+            this.textbox_Portnumber.TabIndex = 6;
+            // 
+            // textbox_EnemyURL
+            // 
+            this.textbox_EnemyURL.Location = new System.Drawing.Point(583, 502);
+            this.textbox_EnemyURL.Name = "textbox_EnemyURL";
+            this.textbox_EnemyURL.Size = new System.Drawing.Size(256, 23);
+            this.textbox_EnemyURL.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(517, 462);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 15);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Self_Port";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(501, 505);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 15);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Enemy_URL";
+            // 
             // ChessStart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SaddleBrown;
             this.ClientSize = new System.Drawing.Size(1184, 761);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textbox_EnemyURL);
+            this.Controls.Add(this.textbox_Portnumber);
             this.Controls.Add(this.Version);
             this.Controls.Add(this.b_Online);
             this.Controls.Add(this.label2);
@@ -116,5 +156,9 @@ namespace Chess
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button b_Online;
         private System.Windows.Forms.Label Version;
+        private System.Windows.Forms.TextBox textbox_Portnumber;
+        private System.Windows.Forms.TextBox textbox_EnemyURL;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

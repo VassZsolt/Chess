@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{D56EDFA1-D845-43D6-B8A3-CC51A4722AD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess", "Chess\Chess.csproj", "{D56EDFA1-D845-43D6-B8A3-CC51A4722AD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLogic", "GameLogic\GameLogic.csproj", "{5A6E1681-9BF8-49D3-A4DF-C61EF0B99769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLogic", "GameLogic\GameLogic.csproj", "{5A6E1681-9BF8-49D3-A4DF-C61EF0B99769}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "WebServer\WebServer.csproj", "{E8A04E9F-7B89-495D-9C05-3020FE84EAE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5A6E1681-9BF8-49D3-A4DF-C61EF0B99769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A6E1681-9BF8-49D3-A4DF-C61EF0B99769}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A6E1681-9BF8-49D3-A4DF-C61EF0B99769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A04E9F-7B89-495D-9C05-3020FE84EAE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A04E9F-7B89-495D-9C05-3020FE84EAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A04E9F-7B89-495D-9C05-3020FE84EAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A04E9F-7B89-495D-9C05-3020FE84EAE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
