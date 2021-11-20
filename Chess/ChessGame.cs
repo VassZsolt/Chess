@@ -365,7 +365,7 @@ namespace Chess
 
         public void End_game()
         {
-            MessageBox.Show("Win!");
+            MessageBox.Show("Game Over!");
             return;
         }
 

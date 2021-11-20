@@ -75,10 +75,10 @@ namespace GameLogic
                         temp_from.Column = column;
                         if (board[temp_from.Row, temp_from.Column] != null) //we can only move with piece
                         {
-                            if (!(from.Row == temp_from.Row && from.Column == temp_from.Column) 
-                                && !(to.Row == temp_from.Row && to.Column   == temp_from.Column)) //We should'nt examine the moving Piece and the hitted one if it exists
+                            if (!(from.Row == temp_from.Row && from.Column == temp_from.Column)
+                                && !(to.Row == temp_from.Row && to.Column == temp_from.Column)) //We should'nt examine the moving Piece and the hitted one if it exists
                             {
-                                if (board[temp_from.Row, temp_from.Column].Color != board[to.Row,to.Column].Color) //the friendly pieces can't hit us
+                                if (board[temp_from.Row, temp_from.Column].Color != board[to.Row, to.Column].Color) //the friendly pieces can't hit us
                                 {
                                     switch (board[temp_from.Row, temp_from.Column].Type)
                                     {
@@ -136,7 +136,7 @@ namespace GameLogic
                     board[from.Row, from.Column].Color = board[to.Row, to.Column].Color;
                     board[to.Row, to.Column] = null;
 
-                    if(temp_to_Needed)
+                    if (temp_to_Needed)
                     {
                         board[to.Row, to.Column] = new ChessPiece();
                         to.Row = temp_to.Row;
@@ -145,7 +145,7 @@ namespace GameLogic
                         board[to.Row, to.Column].Type = temp_to_Type;
                     }
                 }
-                if(can_hit==0)
+                if (can_hit == 0)
                 {
                     possible = true;
                 }

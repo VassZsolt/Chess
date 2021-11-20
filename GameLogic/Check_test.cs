@@ -358,5 +358,88 @@ namespace GameLogic
             }
             return protectable;
         }
+
+
+
+        internal int number_of_possible_moves(PieceColor target_king_color)
+        {
+            List<Coordinate> king_positions = get_King_positions();
+            int number_of_possible_moves = 0;
+            Coordinate target_king_position = new Coordinate();
+            if (target_king_color == board[king_positions[0].Row, king_positions[0].Column].Color)
+            {
+                target_king_position.Row = king_positions[0].Row;
+                target_king_position.Column = king_positions[0].Column;
+            }
+            else
+            {
+                target_king_position.Row = king_positions[1].Row;
+                target_king_position.Column = king_positions[1].Column;
+            }
+            List<Coordinate> basicKingSteps = new List<Coordinate>();
+            Coordinate coordinate = new Coordinate();
+            #region _Something_not_intresting
+            if(target_king_position.Row<7)
+            {
+                coordinate.Row = target_king_position.Row + 1;
+                coordinate.Column = target_king_position.Column;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Row > 0)
+            {
+                coordinate.Row = target_king_position.Row - 1;
+                coordinate.Column = target_king_position.Column;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Column < 7)
+            {
+                coordinate.Row = target_king_position.Row;
+                coordinate.Column = target_king_position.Column+1;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Column > 7)
+            {
+                coordinate.Row = target_king_position.Row ;
+                coordinate.Column = target_king_position.Column-1;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Row < 7 && target_king_position.Column<7)
+            {
+                coordinate.Row = target_king_position.Row + 1;
+                coordinate.Column = target_king_position.Column+1;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Row > 0 && target_king_position.Column > 0)
+            {
+                coordinate.Row = target_king_position.Row - 1;
+                coordinate.Column = target_king_position.Column - 1;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Row < 7 && target_king_position.Column > 0)
+            {
+                coordinate.Row = target_king_position.Row + 1;
+                coordinate.Column = target_king_position.Column - 1;
+                basicKingSteps.Add(coordinate);
+            }
+            if (target_king_position.Row > 0 && target_king_position.Column < 7)
+            {
+                coordinate.Row = target_king_position.Row - 1;
+                coordinate.Column = target_king_position.Column + 1;
+                basicKingSteps.Add(coordinate);
+            }
+            #endregion
+            bool is_check = false;
+            King king = new King();
+            foreach (Coordinate to in basicKingSteps)
+            {
+                is_check = false;
+                is_check = king.entering_into_check(target_king_position, to);
+                if (is_check)
+                {
+                    number_of_possible_moves++;
+                }
+            }
+            return number_of_possible_moves;
+        }
     }
 }

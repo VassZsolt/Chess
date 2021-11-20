@@ -177,12 +177,6 @@ namespace GameLogic
                             target_king_color = PieceColor.Black;
                         }
                         is_check = chess_test.is_Check(target_king_color);
-                        if (is_check)
-                        {
-                            //Finish Check_Mate
-                            return true;
-                            
-                        }
                     }
                     else
                     {
@@ -198,13 +192,13 @@ namespace GameLogic
                         i_give_chess_to_myself = chess_test.is_Check(board[to.Row, to.Column].Color);
                         if (i_give_chess_to_myself)
                         {
-                            for(int row=0; row<8;row++)
+                            for (int row = 0; row < 8; row++)
                             {
-                                for(int column=0;column<8;column++)
+                                for (int column = 0; column < 8; column++)
                                 {
                                     board[row, column] = copy_of_board[row, column];
                                 }
-                            } 
+                            }
                         }
                         else
                         {
@@ -220,13 +214,21 @@ namespace GameLogic
                                 target_king_color = PieceColor.Black;
                             }
                             is_check = chess_test.is_Check(target_king_color);
+                            int countOfKingPossibleSteps = chess_test.number_of_possible_moves(target_king_color);
+                            if (is_check && countOfKingPossibleSteps == 0)
+                            {
+                                check_from.Row = to.Row;
+                                check_from.Column = to.Column;
+                                return true;
+                            }
                             if (is_check)
                             {
                                 check_from.Row = to.Row;
                                 check_from.Column = to.Column;
                             }
+
                         }
-                    }                    
+                    }
                 }
                 return false;
             }
