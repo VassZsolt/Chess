@@ -8,8 +8,8 @@ namespace GameLogic
 {
     public class ChessPiece
     {
-        public PieceColor Color { get; internal set; }
-        public PieceType Type { get; internal set; }
+        public PieceColor Color { get;  internal set; }
+        public PieceType Type { get;  internal set; }
        
     }
 }

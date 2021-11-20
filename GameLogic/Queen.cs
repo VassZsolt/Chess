@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Queen
+    internal class Queen
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
             bool possible = true;
             int i = 0;    //used as row in loops
@@ -19,216 +19,233 @@ namespace GameLogic
             i = from.Row;
             j = from.Column;
 
-            if (i < to.Row && from.Column == to.Column) //Moving Up
+            #region _like_a_rook
+            if (from.Row == to.Row && from.Column != to.Column              //is a horizontal moving?
+             || from.Row != to.Row && from.Column == to.Column)             //is a vertical moving?
             {
-                do
+                if (i < to.Row && from.Column == to.Column) //Moving Up
                 {
-                    if (board[i + 1, to.Column] is not null && possible)
+                    do
                     {
-                        if (board[from.Row, to.Column].Color == PieceColor.Black && board[i + 1, to.Column].Color == PieceColor.White && i + 1 == to.Row     //Move after hit is ignored by felt 3
-                         || board[from.Row, to.Column].Color == PieceColor.White && board[i + 1, to.Column].Color == PieceColor.Black && i + 1 == to.Row)    //Move after hit is ignored by felt 3
+                        if (board[i + 1, to.Column] is not null && possible)
+                        {
+                            if (board[from.Row, to.Column].Color == PieceColor.Black && board[i + 1, to.Column].Color == PieceColor.White && i + 1 == to.Row     //Move after hit is ignored by felt 3
+                             || board[from.Row, to.Column].Color == PieceColor.White && board[i + 1, to.Column].Color == PieceColor.Black && i + 1 == to.Row)    //Move after hit is ignored by felt 3
+                            {
+                                possible = true;
+                                count_of_hit++;  //Hit ignored after 'hit'
+                            }
+                            else
+                            {
+                                possible = false;
+                                return possible;
+                            }
+                        }
+                        if (board[i + 1, to.Column] is null && possible)
                         {
                             possible = true;
-                            count_of_hit++;  //Hit ignored after 'hit'
                         }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
-                    }
-                    if (board[i + 1, to.Column] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i++;
-                } while (i < to.Row);
-            }
+                        i++;
+                    } while (i < to.Row);
+                }
 
-            if (i > to.Row && from.Column == to.Column) //Moving Down
-            {
-                do
+                if (i > to.Row && from.Column == to.Column) //Moving Down
                 {
-                    if (board[i - 1, to.Column] is not null && possible)
+                    do
                     {
-                        if (board[from.Row, to.Column].Color == PieceColor.Black && board[i - 1, to.Column].Color == PieceColor.White && i - 1 == to.Row
-                         || board[from.Row, to.Column].Color == PieceColor.White && board[i - 1, to.Column].Color == PieceColor.Black && i - 1 == to.Row)
+                        if (board[i - 1, to.Column] is not null && possible)
+                        {
+                            if (board[from.Row, to.Column].Color == PieceColor.Black && board[i - 1, to.Column].Color == PieceColor.White && i - 1 == to.Row
+                             || board[from.Row, to.Column].Color == PieceColor.White && board[i - 1, to.Column].Color == PieceColor.Black && i - 1 == to.Row)
+                            {
+                                possible = true;
+                                count_of_hit++;
+                            }
+                            else
+                            {
+                                possible = false;
+                                return possible;
+                            }
+                        }
+                        if (board[i - 1, to.Column] is null && possible)
                         {
                             possible = true;
-                            count_of_hit++;
                         }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
-                    }
-                    if (board[i - 1, to.Column] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i--;
-                } while (i > to.Row);
-            }
+                        i--;
+                    } while (i > to.Row);
+                }
 
-            if (from.Row == to.Row && j < to.Column) //Moving Right
-            {
-                do
+                if (from.Row == to.Row && j < to.Column) //Moving Right
                 {
-                    if (board[to.Row, j + 1] is not null && possible)
+                    do
                     {
-                        if (board[to.Row, from.Column].Color == PieceColor.Black && board[to.Row, j + 1].Color == PieceColor.White && j + 1 == to.Column
-                         || board[to.Row, from.Column].Color == PieceColor.White && board[to.Row, j + 1].Color == PieceColor.Black && j + 1 == to.Column)
+                        if (board[to.Row, j + 1] is not null && possible)
+                        {
+                            if (board[to.Row, from.Column].Color == PieceColor.Black && board[to.Row, j + 1].Color == PieceColor.White && j + 1 == to.Column
+                             || board[to.Row, from.Column].Color == PieceColor.White && board[to.Row, j + 1].Color == PieceColor.Black && j + 1 == to.Column)
+                            {
+                                possible = true;
+                                count_of_hit++;
+                            }
+                            else
+                            {
+                                possible = false;
+                                return possible;
+                            }
+                        }
+                        if (board[to.Row, j + 1] is null && possible)
                         {
                             possible = true;
-                            count_of_hit++;
                         }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
-                    }
-                    if (board[to.Row, j + 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    j++;
-                } while (j < to.Column);
-            }
+                        j++;
+                    } while (j < to.Column);
+                }
 
-            if (from.Row == to.Row && j > to.Column) //Moving Left
-            {
-                do
+                if (from.Row == to.Row && j > to.Column) //Moving Left
                 {
-                    if (board[to.Row, j - 1] is not null && possible)
+                    do
                     {
-                        if (board[to.Row, from.Column].Color == PieceColor.Black && board[to.Row, j - 1].Color == PieceColor.White && j - 1 == to.Column
-                         || board[to.Row, from.Column].Color == PieceColor.White && board[to.Row, j - 1].Color == PieceColor.Black && j - 1 == to.Column)
+                        if (board[to.Row, j - 1] is not null && possible)
+                        {
+                            if (board[to.Row, from.Column].Color == PieceColor.Black && board[to.Row, j - 1].Color == PieceColor.White && j - 1 == to.Column
+                             || board[to.Row, from.Column].Color == PieceColor.White && board[to.Row, j - 1].Color == PieceColor.Black && j - 1 == to.Column)
+                            {
+                                possible = true;
+                                count_of_hit++;
+                            }
+                            else
+                            {
+                                possible = false;
+                                return possible;
+                            }
+                        }
+                        if (board[to.Row, j - 1] is null && possible)
                         {
                             possible = true;
-                            count_of_hit++;
                         }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
-                    }
-                    if (board[to.Row, j - 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    j--;
-                } while (j > to.Column);
+                        j--;
+                    } while (j > to.Column);
+                }
             }
-
-            if (i < to.Row && j < to.Column) //Moving Up-Right
+            #endregion
+            else
             {
-                do
+                #region like_a_bishop
+                if (Math.Abs(to.Row - i) == Math.Abs(to.Column - j)) //is a transverse moving?
                 {
-                    if (board[i + 1, j + 1] is not null && possible)
+                    if (i < to.Row && j < to.Column) //Moving Up-Right
                     {
-                        if (board[from.Row, from.Column].Color == PieceColor.Black && board[i + 1, j + 1].Color == PieceColor.White && i + 1 == to.Row     //Move after hit is ignored by felt 3
-                         || board[from.Row, from.Column].Color == PieceColor.White && board[i + 1, j + 1].Color == PieceColor.Black && i + 1 == to.Row)    //Move after hit is ignored by felt 3
+                        do
                         {
-                            possible = true;
-                            count_of_hit++;  //Hit ignored after 'hit'
-                        }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
+                            if (board[i + 1, j + 1] is not null && possible)
+                            {
+                                if (board[from.Row, from.Column].Color == PieceColor.Black && board[i + 1, j + 1].Color == PieceColor.White && i + 1 == to.Row     //Move after hit is ignored by felt 3
+                                 || board[from.Row, from.Column].Color == PieceColor.White && board[i + 1, j + 1].Color == PieceColor.Black && i + 1 == to.Row)    //Move after hit is ignored by felt 3
+                                {
+                                    possible = true;
+                                    count_of_hit++;  //Hit ignored after 'hit'
+                                }
+                                else
+                                {
+                                    possible = false;
+                                    return possible;
+                                }
+                            }
+                            if (board[i + 1, j + 1] is null && possible)
+                            {
+                                possible = true;
+                            }
+                            i++;
+                            j++;
+                        } while (i < to.Row && from.Column < to.Column);
                     }
-                    if (board[i + 1, j + 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i++;
-                    j++;
-                } while (i < to.Row && from.Column < to.Column);
-            }
 
-            if (i < to.Row && j > to.Column) //Moving Up-Left
-            {
-                do
-                {
-                    if (board[i + 1, j - 1] is not null && possible)
+                    if (i < to.Row && j > to.Column) //Moving Up-Left
                     {
-                        if (board[from.Row, from.Column].Color == PieceColor.Black && board[i + 1, j - 1].Color == PieceColor.White && i + 1 == to.Row
-                         || board[from.Row, from.Column].Color == PieceColor.White && board[i + 1, j - 1].Color == PieceColor.Black && i + 1 == to.Row)
+                        do
                         {
-                            possible = true;
-                            count_of_hit++;
-                        }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
+                            if (board[i + 1, j - 1] is not null && possible)
+                            {
+                                if (board[from.Row, from.Column].Color == PieceColor.Black && board[i + 1, j - 1].Color == PieceColor.White && i + 1 == to.Row
+                                 || board[from.Row, from.Column].Color == PieceColor.White && board[i + 1, j - 1].Color == PieceColor.Black && i + 1 == to.Row)
+                                {
+                                    possible = true;
+                                    count_of_hit++;
+                                }
+                                else
+                                {
+                                    possible = false;
+                                    return possible;
+                                }
+                            }
+                            if (board[i + 1, j - 1] is null && possible)
+                            {
+                                possible = true;
+                            }
+                            i++;
+                            j--;
+                        } while (i < to.Row && j > to.Column);
                     }
-                    if (board[i + 1, j - 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i++;
-                    j--;
-                } while (i < to.Row && j > to.Column);
-            }
 
-            if (i > to.Row && j < to.Column) //Moving Down-Right
-            {
-                do
-                {
-                    if (board[i - 1, j + 1] is not null && possible)
+                    if (i > to.Row && j < to.Column) //Moving Down-Right
                     {
-                        if (board[from.Row, from.Column].Color == PieceColor.Black && board[i - 1, j + 1].Color == PieceColor.White && i - 1 == to.Row
-                         || board[from.Row, from.Column].Color == PieceColor.White && board[i - 1, j + 1].Color == PieceColor.Black && i - 1 == to.Row)
+                        do
                         {
-                            possible = true;
-                            count_of_hit++;
-                        }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
+                            if (board[i - 1, j + 1] is not null && possible)
+                            {
+                                if (board[from.Row, from.Column].Color == PieceColor.Black && board[i - 1, j + 1].Color == PieceColor.White && i - 1 == to.Row
+                                 || board[from.Row, from.Column].Color == PieceColor.White && board[i - 1, j + 1].Color == PieceColor.Black && i - 1 == to.Row)
+                                {
+                                    possible = true;
+                                    count_of_hit++;
+                                }
+                                else
+                                {
+                                    possible = false;
+                                    return possible;
+                                }
+                            }
+                            if (board[i - 1, j + 1] is null && possible)
+                            {
+                                possible = true;
+                            }
+                            i--;
+                            j++;
+                        } while (i > to.Row && j < to.Column);
                     }
-                    if (board[i - 1, j + 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i--;
-                    j++;
-                } while (i > to.Row && j < to.Column);
-            }
 
-            if (i > to.Row && j > to.Column) //Moving Down-Left
-            {
-                do
+                    if (i > to.Row && j > to.Column) //Moving Down-Left
+                    {
+                        do
+                        {
+                            if (board[i - 1, j - 1] is not null && possible)
+                            {
+                                if (board[from.Row, from.Column].Color == PieceColor.Black && board[i - 1, j - 1].Color == PieceColor.White && i - 1 == to.Row
+                                 || board[from.Row, from.Column].Color == PieceColor.White && board[i - 1, j - 1].Color == PieceColor.Black && i - 1 == to.Row)
+                                {
+                                    possible = true;
+                                    count_of_hit++;
+                                }
+                                else
+                                {
+                                    possible = false;
+                                    return possible;
+                                }
+                            }
+                            if (board[i - 1, j + 1] is null && possible)
+                            {
+                                possible = true;
+                            }
+                            i--;
+                            j--;
+                        } while (i > to.Row && j > to.Column);
+                    }
+                }
+                else
                 {
-                    if (board[i - 1, j - 1] is not null && possible)
-                    {
-                        if (board[from.Row, from.Column].Color == PieceColor.Black && board[i - 1, j - 1].Color == PieceColor.White && i - 1 == to.Row
-                         || board[from.Row, from.Column].Color == PieceColor.White && board[i - 1, j - 1].Color == PieceColor.Black && i - 1 == to.Row)
-                        {
-                            possible = true;
-                            count_of_hit++;
-                        }
-                        else
-                        {
-                            possible = false;
-                            return possible;
-                        }
-                    }
-                    if (board[i - 1, j + 1] is null && possible)
-                    {
-                        possible = true;
-                    }
-                    i--;
-                    j--;
-                } while (i > to.Row && j > to.Column);
+                    possible = false;
+                }
+                #endregion
             }
 
             if (possible && count_of_hit < 2)

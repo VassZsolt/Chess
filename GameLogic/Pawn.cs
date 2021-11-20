@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace GameLogic
 {
-    public class Pawn
+    internal class Pawn
     {
-        public bool is_possibe_move(Coordinate from, Coordinate to)
+        bool possible = true;
+        ChessPiece[,] board = GameLogicManager.board;
+        internal bool is_possible_move(Coordinate from, Coordinate to)
         {
-            bool possible = true;
-            ChessPiece[,] board = GameLogicManager.board;
-
             if (board[to.Row, to.Column] is null)
             {
-                if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column                       //Black Pawn move 1 up
-                 || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 2 && from.Column == to.Column && from.Row == 1      //Black Pawn move 2 up
-                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row + 1 && from.Column == to.Column                       //White Pawn move 1 down
-                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row + 2 && from.Column == to.Column && from.Row == 6)     //White Pawn move 2 down
+                if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column                       //Black Pawn move 1 up
+                 || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 2 && from.Column == to.Column && from.Row == 6      //Black Pawn move 2 up
+                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column                       //White Pawn move 1 down
+                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 2 && from.Column == to.Column && from.Row == 1)     //White Pawn move 2 down
                 {
                     possible = true;
                 }
@@ -28,13 +27,21 @@ namespace GameLogic
                     return possible;
                 }
             }
-            else if (board[to.Row, to.Column] is not null)
+            else
             {
+                possible = false;
+            }
 
-                if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
-                 || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row - 1 && from.Column == to.Column - 1                   //Black Pawn hit right
-                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //White Pawn hit left
-                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row + 1 && from.Column == to.Column - 1)                  //White Pawn hit right
+            return possible;
+        }
+        internal bool is_possible_hit(Coordinate from, Coordinate to)
+        {
+            if (board[to.Row, to.Column] is not null)
+            {
+                if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
+                 || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column - 1                   //Black Pawn hit right
+                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column + 1                   //White Pawn hit left
+                 || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column - 1)                  //White Pawn hit right
                 {
                     possible = true;
                 }
@@ -43,6 +50,27 @@ namespace GameLogic
                     possible = false;
                 }
             }
+            else
+            {
+                possible = false;
+            }
+
+            return possible;
+        }
+        internal bool can_give_chess(Coordinate from, Coordinate to)
+        {
+            if (board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column + 1                   //Black Pawn hit left         
+             || board[from.Row, from.Column].Color == PieceColor.Black && from.Row == to.Row + 1 && from.Column == to.Column - 1                   //Black Pawn hit right
+             || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column + 1                   //White Pawn hit left
+             || board[from.Row, from.Column].Color == PieceColor.White && from.Row == to.Row - 1 && from.Column == to.Column - 1)                  //White Pawn hit right
+            {
+                possible = true;
+            }
+            else
+            {
+                possible = false;
+            }
+
             return possible;
         }
     }

@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameLogic
 {
     public class GameLogicManager
     {
-        public static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
+        internal static ChessPiece[,] board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
+        internal static ChessPiece[,] copy_of_board = new ChessPiece[8, 8];  //row,column A=0 (0,0 means A0)
+        GameLogic.Check_test chess_test = new GameLogic.Check_test();
+        internal bool is_check = false;
+        internal Coordinate check_from = new Coordinate();
+        internal PieceColor last_team = PieceColor.Black;
+
 
         public ChessPiece[,] Initialize()
         {
@@ -12,7 +19,7 @@ namespace GameLogic
             for (int i = 0; i < 8; i++)
             {
                 board[0, i] = new ChessPiece();
-                board[0, i].Color = PieceColor.Black;
+                board[0, i].Color = PieceColor.White;
             }
 
             board[0, 0].Type = PieceType.Rook;
@@ -28,21 +35,21 @@ namespace GameLogic
             {
                 board[1, i] = new ChessPiece();
                 board[1, i].Type = PieceType.Pawn;
-                board[1, i].Color = PieceColor.Black;
+                board[1, i].Color = PieceColor.White;
             }
 
             // Create white team
             for (int i = 0; i < 8; i++)
             {
                 board[7, i] = new ChessPiece();
-                board[7, i].Color = PieceColor.White;
+                board[7, i].Color = PieceColor.Black;
             }
 
             board[7, 0].Type = PieceType.Rook;
             board[7, 1].Type = PieceType.Knight;
             board[7, 2].Type = PieceType.Bishop;
-            board[7, 3].Type = PieceType.King;
-            board[7, 4].Type = PieceType.Queen;
+            board[7, 3].Type = PieceType.Queen;
+            board[7, 4].Type = PieceType.King;
             board[7, 5].Type = PieceType.Bishop;
             board[7, 6].Type = PieceType.Knight;
             board[7, 7].Type = PieceType.Rook;
@@ -51,13 +58,12 @@ namespace GameLogic
             {
                 board[6, i] = new ChessPiece();
                 board[6, i].Type = PieceType.Pawn;
-                board[6, i].Color = PieceColor.White;
+                board[6, i].Color = PieceColor.Black;
             }
-
             return board;
         }
 
-        public ChessPiece[,] Move(Coordinate from, Coordinate to)
+        internal ChessPiece[,] Move(Coordinate from, Coordinate to)
         {
             if (board[to.Row, to.Column] is not null)
             {
@@ -120,62 +126,113 @@ namespace GameLogic
             return board;
         }
 
-
-        public ChessPiece[,] Is_possible_move(Coordinate from, Coordinate to)
+        public bool GameLogic(Coordinate from, Coordinate to)
         {
-            bool possible = false;
+            bool possible = false; // This is not a possible move
 
-            if (board[from.Row, from.Column] != null)
+            if (board[from.Row, from.Column].Color != last_team)
             {
-
-                switch (board[from.Row, from.Column].Type)
+                if (is_check == false)
                 {
-                    case PieceType.Pawn:
+                    possible = chess_test.is_possible_Move(from, to);
+                }
+                else
+                {
+                    if (board[from.Row, from.Column].Type == PieceType.King)
+                    {
+                        GameLogic.King king = new GameLogic.King();
+                        possible = king.entering_into_check(from, to);
+                    }
+                    else
+                    {
+                        Coordinate hitable_from = chess_test.Hitable_from(to);
+                        if (hitable_from.Row == from.Row && hitable_from.Column == from.Column
+                            && to.Row == check_from.Row && to.Column == check_from.Column)
                         {
-                            GameLogic.Pawn pawn = new GameLogic.Pawn();
-                            possible = pawn.is_possibe_move(from, to);
-                            break;
-
+                            possible = true;
                         }
-                    case PieceType.Knight:
+                        else
                         {
-                            GameLogic.Knight knight = new GameLogic.Knight();
-                            possible = knight.is_possibe_move(from, to);
-                            break;
+                            List<Coordinate> protectable_from = chess_test.Protectable(from, to);
+                            if (protectable_from.Contains(to))
+                            {
+                                possible = true;
+                            }
                         }
-                    case PieceType.Rook:
-                        {
-                            GameLogic.Rook rook = new GameLogic.Rook();
-                            possible = rook.is_possibe_move(from, to);
-                            break;
-                        }
-                    case PieceType.Bishop:
-                        {
-                            GameLogic.Bishop bishop = new GameLogic.Bishop();
-                            possible = bishop.is_possibe_move(from, to);
-                            break;
-                        }
-                    case PieceType.Queen:
-                        {
-                            GameLogic.Queen queen = new GameLogic.Queen();
-                            possible = queen.is_possibe_move(from, to);
-                            break;
-                        }
-                    case PieceType.King:
-                        {
-                            GameLogic.King king = new GameLogic.King();
-                            possible = king.is_possibe_move(from, to);
-                            break;
-                        }
-
+                    }
                 }
                 if (possible)
                 {
-                    Move(from, to);
+                    if (is_check)
+                    {
+                        Move(from, to);
+                        last_team = board[to.Row, to.Column].Color;
+                        PieceColor target_king_color = new PieceColor();
+                        if (board[to.Row, to.Column].Color == PieceColor.Black)
+                        {
+                            target_king_color = PieceColor.White;
+                        }
+                        else
+                        {
+                            target_king_color = PieceColor.Black;
+                        }
+                        is_check = chess_test.is_Check(target_king_color);
+                    }
+                    else
+                    {
+                        for (int row = 0; row < 8; row++)
+                        {
+                            for (int column = 0; column < 8; column++)
+                            {
+                                copy_of_board[row, column] = board[row, column]; //make a copy from the original table
+                            }
+                        }
+                        Move(from, to);
+                        bool i_give_chess_to_myself = false;
+                        i_give_chess_to_myself = chess_test.is_Check(board[to.Row, to.Column].Color);
+                        if (i_give_chess_to_myself)
+                        {
+                            for (int row = 0; row < 8; row++)
+                            {
+                                for (int column = 0; column < 8; column++)
+                                {
+                                    board[row, column] = copy_of_board[row, column];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            last_team = board[to.Row, to.Column].Color;
+
+                            PieceColor target_king_color = new PieceColor();
+                            if (board[to.Row, to.Column].Color == PieceColor.Black)
+                            {
+                                target_king_color = PieceColor.White;
+                            }
+                            else
+                            {
+                                target_king_color = PieceColor.Black;
+                            }
+                            is_check = chess_test.is_Check(target_king_color);
+                            int countOfKingPossibleSteps = chess_test.number_of_possible_moves(target_king_color);
+                            if (is_check && countOfKingPossibleSteps == 0)
+                            {
+                                check_from.Row = to.Row;
+                                check_from.Column = to.Column;
+                                return true;
+                            }
+                            if (is_check)
+                            {
+                                check_from.Row = to.Row;
+                                check_from.Column = to.Column;
+                            }
+
+                        }
+                    }
                 }
-                return board;
+                return false;
             }
-            return board;
+            return false;
         }
     }
 }
