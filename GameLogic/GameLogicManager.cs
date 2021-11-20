@@ -158,6 +158,23 @@ namespace GameLogic
                             {
                                 possible = true;
                             }
+                            else
+                            {
+                                PieceColor target_king_color = new PieceColor();
+                                if (board[from.Row, from.Column].Color == PieceColor.Black)
+                                {
+                                    target_king_color = PieceColor.Black;
+                                }
+                                else
+                                {
+                                    target_king_color = PieceColor.White;
+                                }
+                                int countOfKingPossibleSteps = chess_test.number_of_possible_moves(target_king_color);
+                                if(countOfKingPossibleSteps==0)
+                                {
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }
@@ -214,13 +231,6 @@ namespace GameLogic
                                 target_king_color = PieceColor.Black;
                             }
                             is_check = chess_test.is_Check(target_king_color);
-                            int countOfKingPossibleSteps = chess_test.number_of_possible_moves(target_king_color);
-                            if (is_check && countOfKingPossibleSteps == 0)
-                            {
-                                check_from.Row = to.Row;
-                                check_from.Column = to.Column;
-                                return true;
-                            }
                             if (is_check)
                             {
                                 check_from.Row = to.Row;
