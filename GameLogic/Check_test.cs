@@ -344,7 +344,7 @@ namespace GameLogic
                             board[row, column].Color = board[king_position.Row, king_position.Column].Color;
                             protectable_coordinate.Row = row;
                             protectable_coordinate.Column = column;
-                            is_check = is_Check(board[from.Row,from.Column].Color);
+                            is_check = is_Check(board[from.Row, from.Column].Color);
                             if (is_check == false)
                             {
                                 protectable.Add(protectable_coordinate);
@@ -379,7 +379,7 @@ namespace GameLogic
             List<Coordinate> basicKingSteps = new List<Coordinate>();
             Coordinate coordinate = new Coordinate();
             #region _Something_not_intresting
-            if(target_king_position.Row<7)
+            if (target_king_position.Row < 7)
             {
                 coordinate.Row = target_king_position.Row + 1;
                 coordinate.Column = target_king_position.Column;
@@ -394,19 +394,19 @@ namespace GameLogic
             if (target_king_position.Column < 7)
             {
                 coordinate.Row = target_king_position.Row;
-                coordinate.Column = target_king_position.Column+1;
+                coordinate.Column = target_king_position.Column + 1;
                 basicKingSteps.Add(coordinate);
             }
-            if (target_king_position.Column > 7)
+            if (target_king_position.Column > 0)
             {
-                coordinate.Row = target_king_position.Row ;
-                coordinate.Column = target_king_position.Column-1;
+                coordinate.Row = target_king_position.Row;
+                coordinate.Column = target_king_position.Column - 1;
                 basicKingSteps.Add(coordinate);
             }
-            if (target_king_position.Row < 7 && target_king_position.Column<7)
+            if (target_king_position.Row < 7 && target_king_position.Column < 7)
             {
                 coordinate.Row = target_king_position.Row + 1;
-                coordinate.Column = target_king_position.Column+1;
+                coordinate.Column = target_king_position.Column + 1;
                 basicKingSteps.Add(coordinate);
             }
             if (target_king_position.Row > 0 && target_king_position.Column > 0)
@@ -428,16 +428,32 @@ namespace GameLogic
                 basicKingSteps.Add(coordinate);
             }
             #endregion
-            bool is_check = false;
+            bool is_possible_move = false;
             King king = new King();
-            foreach (Coordinate to in basicKingSteps)
+            for (int i = 0; i < basicKingSteps.Count; i++)
             {
-                is_check = false;
-                is_check = king.entering_into_check(target_king_position, to);
-                if (is_check)
+                coordinate.Row = basicKingSteps[i].Row;
+                coordinate.Column = basicKingSteps[i].Column;
+                if(board[coordinate.Row,coordinate.Column] is not null)
                 {
-                    number_of_possible_moves++;
+                    if (board[target_king_position.Row, target_king_position.Column].Color != board[coordinate.Row, coordinate.Column].Color)
+                    {
+                        is_possible_move = king.entering_into_check(target_king_position, coordinate);
+                        if (is_possible_move)
+                        {
+                            number_of_possible_moves++;
+                        }
+                    }
                 }
+                else
+                {
+                    is_possible_move = king.entering_into_check(target_king_position, coordinate);
+                    if (is_possible_move)
+                    {
+                        number_of_possible_moves++;
+                    }
+                }
+
             }
             return number_of_possible_moves;
         }
